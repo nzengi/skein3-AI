@@ -1,0 +1,55 @@
+# Skein3 Block Cipher Overview
+
+Skein3 is a variant of the Skein block cipher family, specifically designed to operate on 3 words (192 bits) of data. It's a lightweight version of the original Skein cipher, optimized for systems where resource efficiency is crucial.
+
+## Key Characteristics
+- **Block Size**: 192 bits (3 x 64-bit words)
+- **Key Size**: 192 bits
+- **Tweak Size**: 192 bits
+- **Number of Rounds**: 72
+- **Architecture**: ARX (Addition, Rotation, XOR)
+
+## Comparison with Skein2
+
+| Feature | Skein3 | Skein2 |
+|---------|---------|---------|
+| Block Size | 192 bits | 128 bits |
+| Word Count | 3 words | 2 words |
+| Memory Footprint | Larger | Smaller |
+| Processing Speed | Slower | Faster |
+| Security Level | Higher | Lower |
+
+## Key Advantages
+- Better security margin compared to Skein2
+- Suitable for applications requiring 192-bit security
+- Compatible with modern 64-bit architectures
+- Maintains the ARX design philosophy
+
+## Primary Use Cases
+- Cryptographic hash functions
+- Message authentication codes (MAC)
+- Stream cipher construction
+- Pseudo-random number generation
+- Digital signatures
+
+## Limitations
+- Higher computational overhead than Skein2
+- Increased memory requirements
+- Slower performance on 32-bit systems
+
+## Security Considerations
+- Resistant to known cryptographic attacks
+- Provides strong avalanche effect
+- Secure against related-key attacks
+- Maintains security properties of the Skein family
+
+## Implementation Considerations
+- Optimized for 64-bit processors
+- Requires careful implementation for side-channel resistance
+- Benefits from hardware acceleration when available
+
+## Target Applications
+- High-security embedded systems
+- Cryptographic protocols requiring 192-bit security
+- Military-grade encryption systems
+- Secure communication channels
