@@ -23,7 +23,17 @@ elseif(MSVC)
 endif()
 
 # Add include directories
-include_directories(include)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# Add OpenSSL if needed (optional)
+find_package(OpenSSL)
+if(OPENSSL_FOUND)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+    target_link_libraries(skein3 ${OPENSSL_LIBRARIES})
+endif()
 
 # Add source files
 set(SOURCES
@@ -44,3 +54,12 @@ add_test(NAME SkeinTests COMMAND tests)
 # Install targets
 install(TARGETS skein3 DESTINATION bin)
 install(FILES include/skein3.h include/threefish3.h DESTINATION include)
+
+# CUDA support
+option(WITH_CUDA "Enable CUDA support" OFF)
+if(WITH_CUDA)
+    enable_language(CUDA)
+    add_definitions(-DCUDA_ENABLED)
+    find_package(CUDA REQUIRED)
+    include_directories(${CUDA_INCLUDE_DIRS})
+endif()

@@ -487,3 +487,19 @@ std::vector<uint8_t> Skein3::process_tree_node(
     
     return result;
 }
+
+// AI optimizasyonları
+void Skein3::optimize_for_ai(Config& config) {
+    config.opt_mode = OptimizationMode::AI_TRAINING;
+    config.batch_processing = true;
+    config.gpu_acceleration = true;
+    config.tree_fan_out = 16;  // Daha fazla paralellik
+}
+
+// Blockchain optimizasyonları
+void Skein3::optimize_for_blockchain(Config& config) {
+    config.opt_mode = OptimizationMode::BLOCKCHAIN;
+    config.merkle_tree = true;
+    config.zero_knowledge = true;
+    config.tree_fan_out = 32;  // Maksimum paralellik
+}

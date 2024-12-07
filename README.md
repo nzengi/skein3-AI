@@ -1,6 +1,13 @@
 # Skein3: Advanced Cryptographic Hash Function
 
+>� Next-generation cryptographic hash function with quantum resistance, SIMD optimization, and parallel processing capabilities. Enterprise-ready solution for advanced cryptographic needs.
+
+[![Stars](https://img.shields.io/github/stars/nzengi/skein3?style=social)](https://github.com/nzengi/skein3/stargazers)
+[![Forks](https://img.shields.io/github/forks/nzengi/skein3?style=social)](https://github.com/nzengi/skein3/network/members)
+
 Skein3 is a next-generation cryptographic hash function that offers enhanced security features, quantum resistance, and high performance through SIMD optimizations and parallel processing.
+
+[Website](https://nzengi.github.io/skein3) | [Documentation](https://nzengi.github.io/skein3/docs) | [Commercial License](https://nzengi.github.io/skein3/license)
 
 ## Key Features
 
@@ -84,3 +91,40 @@ Unauthorized use, modification, or distribution for commercial purposes is stric
 
 For commercial licensing and other inquiries:
 - GitHub: [@nzengi](https://github.com/nzengi)
+
+## Enterprise Solutions
+
+### For AI Companies
+- **Batch Processing**: Optimize hash computations for large-scale AI training
+- **GPU Acceleration**: CUDA support for high-performance computing
+- **Memory Optimization**: Specialized memory management for AI workloads
+- **Custom Integration**: Direct integration with popular AI frameworks
+
+### For Blockchain Companies
+- **Merkle Tree Support**: Built-in Merkle tree construction and verification
+- **Zero-Knowledge Proofs**: Native support for ZK-SNARK integration
+- **Mining Optimization**: Specialized mining support with nonce space management
+- **High Throughput**: Optimized for blockchain transaction processing
+
+## Licensing Options
+
+### AI-Specific License
+- All features of Basic Commercial License
+- GPU acceleration support
+- Batch processing optimization
+- Custom AI framework integration
+- Starting from $9,999/year
+
+### Blockchain-Specific License
+- All features of Basic Commercial License
+- Merkle tree optimization
+- Zero-knowledge proof support
+- Mining optimization features
+- Starting from $14,999/year
+
+### Enterprise Unlimited License
+- All features included
+- Custom feature development
+- Priority support
+- Unlimited usage rights
+- Custom pricing
