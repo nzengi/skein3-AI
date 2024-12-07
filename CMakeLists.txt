@@ -3,14 +3,44 @@ project(skein3_project)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# SIMD optimizasyonları için derleyici flagleri
+# Compiler flags for SIMD optimizations
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -msse4.2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -msse4.2 -O3")
+    
+    # Enable additional warnings and security flags
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -fstack-protector-strong")
+    
+    # Enable Link Time Optimization
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto")
 elseif(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2 /O2")
+    
+    # Enable additional warnings and security flags
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /GS")
+    
+    # Enable Link Time Optimization
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GL")
 endif()
 
-# Kaynak dosyaları ekle
+# Add include directories
 include_directories(include)
-add_executable(skein3 main.cpp src/threefish3.cpp src/skein3.cpp)
-add_executable(tests tests/test_skein3.cpp src/threefish3.cpp src/skein3.cpp)
+
+# Add source files
+set(SOURCES
+    src/threefish3.cpp
+    src/skein3.cpp
+)
+
+# Create main executable
+add_executable(skein3 main.cpp ${SOURCES})
+
+# Create test executable
+add_executable(tests tests/test_skein3.cpp ${SOURCES})
+
+# Enable testing
+enable_testing()
+add_test(NAME SkeinTests COMMAND tests)
+
+# Install targets
+install(TARGETS skein3 DESTINATION bin)
+install(FILES include/skein3.h include/threefish3.h DESTINATION include)
