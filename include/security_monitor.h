@@ -1,3 +1,9 @@
+#ifndef SECURITY_MONITOR_H
+#define SECURITY_MONITOR_H
+
+#include <vector>
+#include <cstdint>
+
 class SecurityMonitor {
 public:
     struct SecurityMetrics {
@@ -11,4 +17,17 @@ public:
         const std::vector<uint8_t>& input,
         const std::vector<uint8_t>& output
     );
-}; 
+
+protected:
+    static void detectThreats(
+        SecurityMetricsImpl& metrics,
+        const std::vector<uint8_t>& input,
+        const std::vector<uint8_t>& output
+    );
+    
+    static float calculateAttackProbability(
+        const SecurityMetricsImpl& metrics
+    );
+};
+
+#endif // SECURITY_MONITOR_H 

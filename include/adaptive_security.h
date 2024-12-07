@@ -1,3 +1,11 @@
+#ifndef ADAPTIVE_SECURITY_H
+#define ADAPTIVE_SECURITY_H
+
+#include <vector>
+#include <cstdint>
+#include "skein3.h"
+#include "security_monitor.h"
+
 class AdaptiveSecurity {
 public:
     enum class ThreatLevel {
@@ -14,6 +22,8 @@ public:
     
     static ThreatLevel analyzeThreatLevel(
         const std::vector<uint8_t>& data,
-        const SecurityMetrics& metrics
+        const SecurityMonitor::SecurityMetrics& metrics
     );
-}; 
+};
+
+#endif // ADAPTIVE_SECURITY_H 

@@ -9,6 +9,7 @@
 #include <thread>
 #include <mutex>
 #include <future>
+#include <cstring>
 
 // Custom hash function
 struct ByteVectorHash {
@@ -27,10 +28,9 @@ Threefish3::Threefish3(const std::array<uint64_t, NUM_WORDS>& key,
     : mode_(mode)
     , block_size_(BLOCK_SIZE)
     , num_rounds_(NUM_ROUNDS)
-{
+    , thread_pool_(std::thread::hardware_concurrency()) {
     key_ = std::make_unique<std::array<uint64_t, NUM_WORDS>>();
     tweak_ = std::make_unique<std::array<uint64_t, 3>>();
-    
     *key_ = key;
     *tweak_ = tweak;
 }
@@ -396,70 +396,13 @@ void Threefish3::quantum_resistant_transform(std::vector<uint64_t>& data) {
     }
 }
 
-// ThreadPool implementation
-Threefish3::ThreadPool::ThreadPool(size_t num_threads) : stop(false) {
-    for (size_t i = 0; i < num_threads; ++i) {
-        workers.emplace_back([this] {
-            while (true) {
-                std::function<void()> task;
-                {
-                    std::unique_lock<std::mutex> lock(queue_mutex);
-                    condition.wait(lock, [this] {
-                        return stop || !tasks.empty();
-                    });
-                    
-                    if (stop && tasks.empty()) {
-                        return;
-                    }
-                    
-                    task = std::move(tasks.front());
-                    tasks.pop_back();
-                }
-                task();
-            }
-        });
-    }
-}
-
-template<class F>
-std::future<void> Threefish3::ThreadPool::enqueue(F&& f) {
-    auto task = std::make_shared<std::packaged_task<void()>>(std::forward<F>(f));
-    std::future<void> res = task->get_future();
-    
-    {
-        std::unique_lock<std::mutex> lock(queue_mutex);
-        if (stop) {
-            throw std::runtime_error("ThreadPool is stopped, no new tasks can be added");
-        }
-        tasks.emplace_back([task]() { (*task)(); });
-    }
-    
-    condition.notify_one();
-    return res;
-}
-
-// ThreadPool destructor
-Threefish3::ThreadPool::~ThreadPool() {
-    {
-        std::unique_lock<std::mutex> lock(queue_mutex);
-        stop = true;
-    }
-    
-    condition.notify_all();
-    for (std::thread& worker : workers) {
-        worker.join();
-    }
-}
-
 void Threefish3::process_chunk(const uint8_t* input, uint8_t* output, size_t chunk_size) {
-    // Calculate number of blocks
+    std::array<uint64_t, NUM_WORDS> block;
+    std::array<uint64_t, NUM_WORDS> result;
+    
     size_t num_blocks = (chunk_size + BLOCK_SIZE - 1) / BLOCK_SIZE;
     
-    // Process each block
     for (size_t i = 0; i < num_blocks; i++) {
-        std::array<uint64_t, NUM_WORDS> block, result;
-        
-        // Special case for last block
         size_t current_block_size = (i == num_blocks - 1 && chunk_size % BLOCK_SIZE != 0) 
                                   ? chunk_size % BLOCK_SIZE 
                                   : BLOCK_SIZE;
@@ -487,38 +430,23 @@ void Threefish3::process_chunk(const uint8_t* input, uint8_t* output, size_t chu
 }
 
 uint64_t Threefish3::quantum_mix(uint64_t value, size_t iteration) {
-    // Quantum resistant mixing function
-    const uint64_t QUANTUM_CONSTANTS[] = {
+    static const uint64_t QUANTUM_CONSTANTS[] = {
         0x9E3779B97F4A7C15ULL,  // Golden ratio based constant
-        0x71D67FFFEDA60000ULL,  // Mersenne prime number based
+        0x71D67FFFEDA60000ULL,  // Mersenne prime based
         0xFFF7EEE000000000ULL   // High entropy constant
     };
     
-    // Iteration-based mixing
     value ^= QUANTUM_CONSTANTS[iteration % 3];
+    value = (value << 23) | (value >> 41);
+    value *= QUANTUM_CONSTANTS[2];
+    value ^= value >> 41;
     
-    // Non-linear transformations
-    value = (value << 13) | (value >> 51);
-    value *= QUANTUM_CONSTANTS[0];
-    value ^= value >> 17;
-    value *= QUANTUM_CONSTANTS[1];
-    value ^= value >> 31;
-    
-    // Extra security layer
-    if (mode_ == SecurityMode::QUANTUM) {
-        // Extra permutation
-        value = (value << 23) | (value >> 41);
-        value *= QUANTUM_CONSTANTS[2];
-        value ^= value >> 41;
-        
-        // Bit-level mixing
-        uint64_t temp = value;
-        for (int i = 0; i < 64; i += 8) {
-            uint8_t byte = (temp >> i) & 0xFF;
-            byte = ((byte * 167) + 13) & 0xFF; // Non-linear byte transformation
-            value &= ~(0xFFULL << i);
-            value |= static_cast<uint64_t>(byte) << i;
-        }
+    uint64_t temp = value;
+    for (int i = 0; i < 64; i += 8) {
+        uint8_t byte = static_cast<uint8_t>((temp >> i) & 0xFF);
+        byte = static_cast<uint8_t>((byte * 167 + 13) & 0xFF);
+        value &= ~(0xFFULL << i);
+        value |= static_cast<uint64_t>(byte) << i;
     }
     
     return value;

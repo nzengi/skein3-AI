@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
-#include <base64.h>
+#include "../include/base64.h"
 
 bool LicenseManager::validateLicense(const std::string& license_key) {
     try {

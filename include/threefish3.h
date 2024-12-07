@@ -13,6 +13,7 @@
 #include <condition_variable>
 #include <functional>
 #include <queue>
+#include "thread_pool.h"
 
 // Threefish3 class
 class Threefish3 {
@@ -37,7 +38,16 @@ public:
     // Constructors
     Threefish3(const std::array<uint64_t, NUM_WORDS>& key, 
                const std::array<uint64_t, 3>& tweak,
-               SecurityMode mode = SecurityMode::STANDARD);
+               SecurityMode mode = SecurityMode::STANDARD)
+        : mode_(mode)
+        , block_size_(BLOCK_SIZE)
+        , num_rounds_(NUM_ROUNDS)
+        , thread_pool_(std::thread::hardware_concurrency()) {
+        key_ = std::make_unique<std::array<uint64_t, NUM_WORDS>>();
+        tweak_ = std::make_unique<std::array<uint64_t, 3>>();
+        *key_ = key;
+        *tweak_ = tweak;
+    }
     ~Threefish3();
 
     void encrypt(const std::array<uint64_t, NUM_WORDS>& plaintext, 
@@ -102,18 +112,20 @@ private:
     void cascade_encrypt(std::vector<uint64_t>& data);
     void adaptive_encrypt(std::vector<uint64_t>& data);
 
-    // Thread pool helper class
-    class ThreadPool {
-    public:
-        ThreadPool(size_t num_threads);
-        template<class F>
-        std::future<void> enqueue(F&& f);
-    private:
-        std::vector<std::thread> workers;
-        std::vector<std::function<void()>> tasks;
-        std::mutex queue_mutex;
-        std::condition_variable condition;
-        bool stop;
+    ThreadPool thread_pool_;
+
+    static constexpr uint64_t LATTICE_CONSTANTS[] = {
+        0xD2B28B899FCEF1D9ULL,
+        0x8C5E548AE35E3190ULL,
+        0xA71F69D7F1FB9D6AULL,
+        0xE4B47859A5897091ULL
+    };
+
+    static constexpr uint64_t CASCADE_CONSTANTS[] = {
+        0xA5A5A5A5A5A5A5A5ULL,
+        0x123456789ABCDEF0ULL,
+        0xFEDCBA9876543210ULL,
+        0x0F1E2D3C4B5A6978ULL
     };
 };
 

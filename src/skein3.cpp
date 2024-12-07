@@ -4,6 +4,9 @@
 #include <future>
 #include <queue>
 #include <mutex>
+#include <fstream>
+#include <iostream>
+#include "neural_adaptation.h"
 
 namespace {
     // Constants for domain separation
@@ -92,6 +95,22 @@ namespace {
             G[i] = block[i] ^ cipher_text[i];
         }
     }
+
+    // Neural network instance
+    static NeuralHashAdapter::Network createDefaultNetwork() {
+        return NeuralHashAdapter::Network({64, 128, 256, 128, 64});
+    }
+
+    // Neural adaptation context
+    struct NeuralContext {
+        NeuralHashAdapter::Network network;
+        std::vector<uint8_t> adapted_state;
+        bool is_initialized;
+
+        NeuralContext() : network(createDefaultNetwork()), is_initialized(false) {}
+    };
+
+    static thread_local NeuralContext neural_context;
 }
 
 // Static member functions of Skein3 class
@@ -128,6 +147,14 @@ void Skein3::process_config_block(std::array<uint64_t, Threefish3::NUM_WORDS>& s
 // Main hash function implementation
 std::vector<uint8_t> Skein3::hash(const std::vector<uint8_t>& message,
                                  const Config& config) {
+    checkLicense(config);
+
+    // Neural adaptation
+    std::vector<uint8_t> adapted_message = message;
+    if (config.neural_config.enable_neural_adaptation) {
+        adapted_message = adaptHash(message, config);
+    }
+
     // Determine security mode
     Threefish3::SecurityMode sec_mode;
     switch (config.size) {
@@ -190,6 +217,11 @@ std::vector<uint8_t> Skein3::hash(const std::vector<uint8_t>& message,
     std::vector<uint8_t> result(hash_size);
     std::memcpy(result.data(), out_ctx.state.data(), hash_size);
     
+    // Apply neural adaptation to final hash if enabled
+    if (config.neural_config.enable_neural_adaptation) {
+        result = adaptHash(result, config);
+    }
+
     return result;
 }
 
@@ -501,5 +533,110 @@ void Skein3::optimize_for_blockchain(Config& config) {
     config.opt_mode = OptimizationMode::BLOCKCHAIN;
     config.merkle_tree = true;
     config.zero_knowledge = true;
-    config.tree_fan_out = 32;  // Maksimum paralellik
+    config.tree_fan_out = 32;  // Maximum parallelism
+}
+
+// Neural adaptation functions
+void Skein3::initializeNeuralAdapter(const Config& config) {
+    if (!neural_context.is_initialized && config.neural_config.enable_neural_adaptation) {
+        neural_context.network = createDefaultNetwork();
+        neural_context.is_initialized = true;
+    }
+}
+
+std::vector<uint8_t> Skein3::adaptHash(
+    const std::vector<uint8_t>& input,
+    const Config& config
+) {
+    if (!config.neural_config.enable_neural_adaptation) {
+        return input;
+    }
+
+    // Initialize if needed
+    initializeNeuralAdapter(config);
+
+    // Adapt network parameters
+    NeuralHashAdapter::adaptParameters(
+        input,
+        neural_context.network,
+        config.neural_config.complexity_threshold,
+        config.neural_config.adaptation_rounds
+    );
+
+    // Apply neural adaptation
+    return NeuralHashAdapter::applyAdaptation(input, neural_context.network);
+}
+
+// Batch işleme için neural adaptation desteği
+std::vector<std::vector<uint8_t>> Skein3::batch_hash(
+    const std::vector<std::vector<uint8_t>>& messages,
+    const Config& config
+) {
+    std::vector<std::vector<uint8_t>> results;
+    results.reserve(messages.size());
+
+    // Initialize neural network once for batch
+    if (config.neural_config.enable_neural_adaptation) {
+        initializeNeuralAdapter(config);
+    }
+
+    // Process each message
+    for (const auto& message : messages) {
+        results.push_back(hash(message, config));
+    }
+
+    return results;
+}
+
+// Neural ağ ağırlıklarını kaydetme ve yükleme fonksiyonları
+void Skein3::saveNeuralWeights(const std::string& filename) {
+    if (!neural_context.is_initialized) {
+        throw std::runtime_error("Neural network not initialized");
+    }
+
+    std::ofstream file;
+    file.open(filename, std::ios::binary);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file for writing");
+    }
+
+    // Save network architecture and weights
+    for (const auto& layer : neural_context.network.layers) {
+        // Save weights
+        for (const auto& row : layer.weights) {
+            file.write(reinterpret_cast<const char*>(row.data()),
+                      static_cast<std::streamsize>(row.size() * sizeof(float)));
+        }
+        // Save biases
+        file.write(reinterpret_cast<const char*>(layer.biases.data()),
+                  static_cast<std::streamsize>(layer.biases.size() * sizeof(float)));
+    }
+    file.close();
+}
+
+void Skein3::loadNeuralWeights(const std::string& filename) {
+    std::ifstream file;
+    file.open(filename, std::ios::binary);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file for reading");
+    }
+
+    // Initialize if needed
+    if (!neural_context.is_initialized) {
+        neural_context.network = createDefaultNetwork();
+        neural_context.is_initialized = true;
+    }
+
+    // Load network weights
+    for (auto& layer : neural_context.network.layers) {
+        // Load weights
+        for (auto& row : layer.weights) {
+            file.read(reinterpret_cast<char*>(row.data()),
+                     static_cast<std::streamsize>(row.size() * sizeof(float)));
+        }
+        // Load biases
+        file.read(reinterpret_cast<char*>(layer.biases.data()),
+                 static_cast<std::streamsize>(layer.biases.size() * sizeof(float)));
+    }
+    file.close();
 }

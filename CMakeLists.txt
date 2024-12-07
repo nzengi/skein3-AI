@@ -39,6 +39,7 @@ endif()
 set(SOURCES
     src/threefish3.cpp
     src/skein3.cpp
+    src/thread_pool.cpp
 )
 
 # Create main executable

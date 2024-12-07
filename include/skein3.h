@@ -267,6 +267,19 @@ public:
         return QuantumResistantMemory::verifyIntegrity(memory, size, prot_config);
     }
 
+    static std::vector<uint8_t> adaptHash(
+        const std::vector<uint8_t>& message,
+        const Config& config
+    );
+    
+    static void optimize_for_ai(Config& config);
+    static void optimize_for_blockchain(Config& config);
+
+    // Neural network functions
+    static void initializeNeuralAdapter(const Config& config);
+    static void saveNeuralWeights(const std::string& filename);
+    static void loadNeuralWeights(const std::string& filename);
+
 private:
     static void checkLicense(const Config& config) {
         auto& license_manager = LicenseManager::getInstance();
