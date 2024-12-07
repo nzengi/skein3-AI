@@ -113,17 +113,17 @@ For commercial licensing and other inquiries:
 ## Licensing
 
 ### Commercial Licenses
-- **Basic**: $999/year
+- **Basic**:
   - Single product use
   - Standard features
   - Email support
 
-- **AI-Specific**: $9,999/year
+- **AI-Specific**
   - AI optimization features
   - GPU acceleration
   - Priority support
 
-- **Blockchain**: $14,999/year
+- **Blockchain**:
   - Blockchain features
   - Custom integration
   - 24/7 support
