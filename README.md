@@ -63,14 +63,12 @@ For commercial use, please contact nzengi@github.com for licensing options. Comm
   - Single product use
   - Technical support
   - Security updates
-  - Starting from $999/year
 
 - **Enterprise License**
   - Multiple product use
   - Priority support
   - Security updates
   - Custom feature development
-  - Starting from $4999/year
 
 ### Ownership and Rights
 All rights reserved © 2024 nzengi. This includes but is not limited to:
