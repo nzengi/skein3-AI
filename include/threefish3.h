@@ -3,20 +3,118 @@
 
 #include <array>
 #include <cstdint>
+#include <memory>
+#include <immintrin.h>
+#include <thread>
+#include <vector>
+#include <mutex>
+#include <random>
+#include <numeric>
+#include <condition_variable>
+#include <functional>
+#include <queue>
 
-// Threefish3 sınıfı
+// Threefish3 class
 class Threefish3 {
 public:
-    static const size_t BLOCK_SIZE = 128; // 128 byte (1024 bit)
-    static const size_t NUM_WORDS = BLOCK_SIZE / 8;
+    // Dynamic block size support
+    enum class SecurityMode {
+        STANDARD = 256,    // 256-byte block
+        ENHANCED = 512,    // 512-byte block
+        QUANTUM = 1024     // 1024-byte block (quantum resistant)
+    };
+    
+    enum class OperationMode {
+        STANDARD,       // Normal mode
+        CASCADE,        // Multi-pass mode
+        ADAPTIVE        // Adaptive security mode
+    };
 
-    Threefish3(const std::array<uint64_t, NUM_WORDS>& key, const std::array<uint64_t, 3>& tweak);
-    void encrypt(const std::array<uint64_t, NUM_WORDS>& plaintext, std::array<uint64_t, NUM_WORDS>& ciphertext);
+    static const size_t BLOCK_SIZE = 256;
+    static const size_t NUM_WORDS = BLOCK_SIZE / 8;
+    static constexpr uint64_t KEY_PARITY = 0x1BD11BDAA9FC1A22ULL;
+
+    // Constructors
+    Threefish3(const std::array<uint64_t, NUM_WORDS>& key, 
+               const std::array<uint64_t, 3>& tweak,
+               SecurityMode mode = SecurityMode::STANDARD);
+    ~Threefish3();
+
+    void encrypt(const std::array<uint64_t, NUM_WORDS>& plaintext, 
+                std::array<uint64_t, NUM_WORDS>& ciphertext);
+    void decrypt(const std::array<uint64_t, NUM_WORDS>& ciphertext, 
+                std::array<uint64_t, NUM_WORDS>& plaintext);
+
+    // Parallel processing functions
+    void parallel_encrypt(const std::vector<uint8_t>& input,
+                        std::vector<uint8_t>& output,
+                        size_t num_threads = std::thread::hardware_concurrency());
+    
+    void parallel_decrypt(const std::vector<uint8_t>& input,
+                        std::vector<uint8_t>& output,
+                        size_t num_threads = std::thread::hardware_concurrency());
+
+    // Benchmark function
+    static void benchmark(size_t data_size = 1024 * 1024);
+
+    void set_operation_mode(OperationMode mode);
 
 private:
-    static const size_t NUM_ROUNDS = 72; // Şifreleme tur sayısı
-    std::array<uint64_t, NUM_WORDS> key_;
-    std::array<uint64_t, 3> tweak_;
+    static const size_t NUM_ROUNDS = 96;
+    static const size_t MIX_ROUNDS = 8;
+    
+    std::unique_ptr<std::array<uint64_t, NUM_WORDS>> key_;
+    std::unique_ptr<std::array<uint64_t, 3>> tweak_;
+    
+    void mix_function(uint64_t& x0, uint64_t& x1, int round);
+    void permute_words(std::array<uint64_t, NUM_WORDS>& data);
+    void inverse_mix_function(uint64_t& x0, uint64_t& x1, int round);
+
+    void simd_mix_function(__m256i& block, int round);
+    void simd_inverse_mix_function(__m256i& block, int round);
+    void simd_permute_words(std::array<__m256i, NUM_WORDS/4>& data);
+
+    // Parallel processing helper functions
+    void encrypt_chunk(const uint8_t* input, uint8_t* output, 
+                      size_t start_block, size_t num_blocks);
+    void decrypt_chunk(const uint8_t* input, uint8_t* output,
+                      size_t start_block, size_t num_blocks);
+    void process_chunk(const uint8_t* input, uint8_t* output, size_t chunk_size);
+
+    SecurityMode mode_;
+    size_t block_size_;
+    size_t num_rounds_;
+    
+    // Dynamic permutation tables
+    std::vector<uint8_t> permutation_table_;
+    std::vector<uint8_t> inverse_permutation_table_;
+    
+    // New functions
+    void generate_dynamic_tables();
+    void avalanche_mix(std::vector<uint64_t>& data);
+    void quantum_resistant_transform(std::vector<uint64_t>& data);
+    uint64_t quantum_mix(uint64_t value, size_t iteration);
+    void apply_lattice_transformation(std::vector<uint64_t>& data);
+
+    OperationMode op_mode_ = OperationMode::STANDARD;
+    
+    // New encryption modes functions
+    void cascade_encrypt(std::vector<uint64_t>& data);
+    void adaptive_encrypt(std::vector<uint64_t>& data);
+
+    // Thread pool helper class
+    class ThreadPool {
+    public:
+        ThreadPool(size_t num_threads);
+        template<class F>
+        std::future<void> enqueue(F&& f);
+    private:
+        std::vector<std::thread> workers;
+        std::vector<std::function<void()>> tasks;
+        std::mutex queue_mutex;
+        std::condition_variable condition;
+        bool stop;
+    };
 };
 
 #endif // THREEFISH3_H

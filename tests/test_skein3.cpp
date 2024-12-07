@@ -18,6 +18,19 @@ void test_skein3() {
     assert(hash1.size() == 64);
     assert(hash2.size() == 64);
 
+    // Boş mesaj testi
+    auto empty_hash = skein3_hash(std::vector<uint8_t>(), 64);
+    assert(empty_hash.size() == 64);
+    
+    // Uzun mesaj testi
+    std::vector<uint8_t> long_message(1000000, 'a');
+    auto long_hash = skein3_hash(long_message, 64);
+    assert(long_hash.size() == 64);
+    
+    // Farklı hash boyutları için testler
+    auto hash_32 = skein3_hash(std::vector<uint8_t>{1,2,3}, 32);
+    assert(hash_32.size() == 32);
+
     std::cout << "Tüm testler başarıyla geçti!" << std::endl;
 }
 
