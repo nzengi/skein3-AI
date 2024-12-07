@@ -280,6 +280,18 @@ public:
     static void saveNeuralWeights(const std::string& filename);
     static void loadNeuralWeights(const std::string& filename);
 
+    static void createCheckpoint(const std::vector<uint8_t>& data) {
+        checkpoint_data_ = data;
+        has_checkpoint_ = true;
+    }
+
+    static std::vector<uint8_t> recoverFromError() {
+        if (!has_checkpoint_) {
+            throw std::runtime_error("No checkpoint available");
+        }
+        return checkpoint_data_;
+    }
+
 private:
     static void checkLicense(const Config& config) {
         auto& license_manager = LicenseManager::getInstance();
@@ -336,17 +348,8 @@ private:
         const Config& config,
         bool is_root);
 
-    struct ErrorRecoveryContext {
-        std::vector<uint8_t> last_valid_state;
-        uint64_t checkpoint_counter;
-        bool recovery_needed;
-    };
-
-    // Hash işlemi sırasında checkpoint oluşturma
-    static void createCheckpoint(const std::vector<uint8_t>& current_state);
-
-    // Hata durumunda son geçerli duruma dönme
-    static std::vector<uint8_t> recoverFromError();
+    static std::vector<uint8_t> checkpoint_data_;
+    static bool has_checkpoint_;
 };
 
 #endif // SKEIN3_H

@@ -660,3 +660,7 @@ bool Skein3::verifyHash(const std::vector<uint8_t>& message,
     auto computed_hash = Skein3::hash(message, config);
     return (computed_hash == hash);
 }
+
+// Static üye değişkenlerin tanımı
+std::vector<uint8_t> Skein3::checkpoint_data_;
+bool Skein3::has_checkpoint_ = false;
