@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include <cstdint>
+#include <mutex>
 
 class LicenseManager {
 public:
@@ -50,6 +51,7 @@ public:
 private:
     LicenseManager() = default;
     License current_license_;
+    std::mutex license_mutex_;
     
     // Custom hash implementation instead of OpenSSL
     std::vector<uint8_t> generateHash(const std::string& data);

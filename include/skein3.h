@@ -335,6 +335,18 @@ private:
         const std::vector<std::vector<uint8_t>>& children,
         const Config& config,
         bool is_root);
+
+    struct ErrorRecoveryContext {
+        std::vector<uint8_t> last_valid_state;
+        uint64_t checkpoint_counter;
+        bool recovery_needed;
+    };
+
+    // Hash işlemi sırasında checkpoint oluşturma
+    static void createCheckpoint(const std::vector<uint8_t>& current_state);
+
+    // Hata durumunda son geçerli duruma dönme
+    static std::vector<uint8_t> recoverFromError();
 };
 
 #endif // SKEIN3_H

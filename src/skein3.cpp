@@ -640,3 +640,23 @@ void Skein3::loadNeuralWeights(const std::string& filename) {
     }
     file.close();
 }
+
+// Memory leak protection eklenebilir
+void Skein3::secureCleanup() {
+    // Hassas verileri temizle
+    if (neural_context.is_initialized) {
+        for (auto& layer : neural_context.network.layers) {
+            QuantumResistantMemory::secureWipe(layer.weights.data(), 
+                                             layer.weights.size() * sizeof(float));
+            QuantumResistantMemory::secureWipe(layer.biases.data(), 
+                                             layer.biases.size() * sizeof(float));
+        }
+    }
+}
+
+bool Skein3::verifyHash(const std::vector<uint8_t>& message,
+                       const std::vector<uint8_t>& hash,
+                       const Config& config) {
+    auto computed_hash = Skein3::hash(message, config);
+    return (computed_hash == hash);
+}

@@ -42,15 +42,31 @@ set(SOURCES
     src/thread_pool.cpp
 )
 
-# Create main executable
-add_executable(skein3 main.cpp ${SOURCES})
+# Önce kütüphaneyi oluştur
+add_library(skein3_lib ${SOURCES})
 
-# Create test executable
-add_executable(tests tests/test_skein3.cpp ${SOURCES})
+# Ana uygulamayı oluştur
+add_executable(skein3 main.cpp)
+target_link_libraries(skein3 skein3_lib)
 
-# Enable testing
+# Test hedeflerini ekle
+add_executable(basic_test examples/basic_test.cpp)
+add_executable(performance_test examples/performance_test.cpp)
+add_executable(parallel_test examples/parallel_test.cpp)
+add_executable(security_test examples/security_test.cpp)
+
+# Test hedeflerini bağla
+target_link_libraries(basic_test skein3_lib)
+target_link_libraries(performance_test skein3_lib)
+target_link_libraries(parallel_test skein3_lib)
+target_link_libraries(security_test skein3_lib)
+
+# CTest entegrasyonu
 enable_testing()
-add_test(NAME SkeinTests COMMAND tests)
+add_test(NAME BasicTest COMMAND basic_test)
+add_test(NAME PerformanceTest COMMAND performance_test)
+add_test(NAME ParallelTest COMMAND parallel_test)
+add_test(NAME SecurityTest COMMAND security_test)
 
 # Install targets
 install(TARGETS skein3 DESTINATION bin)
