@@ -1,2 +1,0 @@
-/usr/bin/ar qc libskein3_lib.a CMakeFiles/skein3_lib.dir/src/threefish3.cpp.o CMakeFiles/skein3_lib.dir/src/skein3.cpp.o CMakeFiles/skein3_lib.dir/src/license.cpp.o CMakeFiles/skein3_lib.dir/src/thread_pool.cpp.o CMakeFiles/skein3_lib.dir/src/base64.cpp.o CMakeFiles/skein3_lib.dir/src/ai_protection.cpp.o CMakeFiles/skein3_lib.dir/src/blockchain_features.cpp.o CMakeFiles/skein3_lib.dir/src/security_monitor.cpp.o CMakeFiles/skein3_lib.dir/src/adaptive_security.cpp.o CMakeFiles/skein3_lib.dir/src/performance_metrics.cpp.o
-/usr/bin/ranlib libskein3_lib.a
