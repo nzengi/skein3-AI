@@ -31,6 +31,8 @@ Threefish3::~Threefish3() = default;
 Threefish3::Threefish3(const std::array<uint64_t, NUM_WORDS>& state,
                        const std::array<uint64_t, 3>& tweak, SecurityMode mode)
     : state_(state), tweak_(tweak), mode_(mode) {
+    key_ = state_;
+    
     if (mode == SecurityMode::QUANTUM_RESISTANT) {
         quantum_init();
     }

@@ -44,6 +44,16 @@ namespace {
                       (is_final ? T1_FINAL : 0) |
                       (domain << 56);
         }
+        
+        // Copy constructor
+        BlockContext(const BlockContext& other)
+            : state(other.state)
+            , tweak(other.tweak)
+            , bytes_processed(other.bytes_processed)
+            , domain(other.domain)
+            , is_first(other.is_first)
+            , is_final(other.is_final)
+        {}
     };
     
     // Block processing functions
@@ -78,6 +88,14 @@ namespace {
     };
 
     static thread_local NeuralContext neural_context;
+
+    // Global sabit IV tanımı
+    const std::array<uint64_t, Threefish3::NUM_WORDS> INITIAL_STATE = {
+        0x4903ADFF749C51CE, 0x0D95DE399746DF03,
+        0x8FD1934127C79BCE, 0x9A255629FF352CB1,
+        0x5DB62599DF6CA7B0, 0xEABE394CA9D5C3F4,
+        0x991112C71A75B523, 0xAE18A40B660FCC33
+    };
 }
 
 // Static member functions of Skein3 class
@@ -85,6 +103,7 @@ void Skein3::process_config_block(std::array<uint64_t, Threefish3::NUM_WORDS>& s
                                 const Config& config) {
     BlockContext ctx;
     ctx.domain = DOMAIN_CFG;
+    ctx.state = state;
     
     // Prepare configuration block
     std::array<uint64_t, Threefish3::NUM_WORDS> cfg_block = {};
@@ -93,7 +112,6 @@ void Skein3::process_config_block(std::array<uint64_t, Threefish3::NUM_WORDS>& s
     cfg_block[2] = static_cast<uint64_t>(config.mode);
     
     if (config.personalization) {
-        // Add personalization string
         size_t person_size = std::min(config.person_string.size(), 
                                     (Threefish3::NUM_WORDS - 3) * sizeof(uint64_t));
         std::memcpy(&cfg_block[3], 
@@ -116,13 +134,11 @@ std::vector<uint8_t> Skein3::hash(
     const std::vector<uint8_t>& message,
     const Config& config
 ) {
-    // Implementation
+    // Hash boyutunu ayarla
     size_t hash_size = static_cast<size_t>(config.size) / 8;
-    std::vector<uint8_t> result(hash_size, 0);
+    std::vector<uint8_t> result(hash_size);
 
-    checkLicense(config);
-
-    // Determine security mode
+    // Güvenlik modunu belirle
     Threefish3::SecurityMode sec_mode;
     switch (config.size) {
         case HashSize::HASH_1024:
@@ -135,15 +151,16 @@ std::vector<uint8_t> Skein3::hash(
             sec_mode = Threefish3::SecurityMode::STANDARD;
     }
 
-    // Initialize state
-    std::array<uint64_t, Threefish3::NUM_WORDS> state{};
-    
-    // Process configuration block
+    // Initial state'i sabit IV'den kopyala
+    std::array<uint64_t, Threefish3::NUM_WORDS> state = INITIAL_STATE;
+
+    // Konfigürasyon bloğunu işle
     process_config_block(state, config);
-    
-    // Process message blocks
+
+    // Mesaj bloklarını işle
     BlockContext ctx;
     ctx.state = state;
+    ctx.is_first = true;
     
     const size_t block_size = Threefish3::BLOCK_SIZE;
     size_t remaining = message.size();
@@ -151,9 +168,8 @@ std::vector<uint8_t> Skein3::hash(
     
     while (remaining > 0) {
         size_t current_size = std::min(remaining, block_size);
-        bool is_last = (remaining <= block_size);
         
-        if (is_last) {
+        if (remaining <= block_size) {
             ctx.is_final = true;
         }
         
@@ -162,9 +178,13 @@ std::vector<uint8_t> Skein3::hash(
                      current_size,
                      sec_mode);
         
+        ctx.is_first = false;
         offset += current_size;
         remaining -= current_size;
     }
+
+    // Son state'i result vektörüne kopyala
+    std::memcpy(result.data(), ctx.state.data(), hash_size);
     
     return result;
 }
@@ -579,28 +599,29 @@ void Skein3::process_block(
 ) {
     std::array<uint64_t, Threefish3::NUM_WORDS> block;
     
+    // Blok verilerini kopyala ve sıfırla
     if (size == Threefish3::BLOCK_SIZE) {
         std::memcpy(block.data(), data, size);
     } else {
+        std::memset(block.data(), 0, Threefish3::BLOCK_SIZE);
         std::memcpy(block.data(), data, size);
-        std::memset(reinterpret_cast<uint8_t*>(block.data()) + size, 
-                   0, 
-                   Threefish3::BLOCK_SIZE - size);
     }
     
+    // Tweak değerlerini güncelle
     ctx.bytes_processed += size;
     ctx.tweak[0] = ctx.bytes_processed;
-    ctx.tweak[1] = (ctx.is_first ? T1_FIRST : 0) | 
-                   (ctx.is_final ? T1_FINAL : 0) |
+    ctx.tweak[1] = (ctx.is_first ? T1_FIRST : 0ULL) | 
+                   (ctx.is_final ? T1_FINAL : 0ULL) |
                    (ctx.domain << 56);
+    ctx.tweak[2] = 0;  // Reserved for future use
     
+    // Threefish şifreleme
     Threefish3 cipher(ctx.state, ctx.tweak, sec_mode);
     std::array<uint64_t, Threefish3::NUM_WORDS> cipher_text;
     cipher.encrypt(block, cipher_text);
     
+    // State'i güncelle
     for (size_t i = 0; i < Threefish3::NUM_WORDS; ++i) {
         ctx.state[i] = block[i] ^ cipher_text[i];
     }
-    
-    ctx.is_first = false;
 }

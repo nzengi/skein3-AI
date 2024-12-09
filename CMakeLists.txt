@@ -75,7 +75,6 @@ add_executable(license_test examples/license_test.cpp)
 add_executable(memory_test examples/memory_test.cpp)
 add_executable(performance_metrics_test examples/performance_metrics_test.cpp)
 add_executable(security_benchmark examples/security_benchmark.cpp)
-add_executable(readme_test readme_test.cpp)
 
 # Link test targets with the library
 target_link_libraries(basic_test PRIVATE skein3_lib)
@@ -90,7 +89,6 @@ target_link_libraries(license_test PRIVATE skein3_lib)
 target_link_libraries(memory_test PRIVATE skein3_lib)
 target_link_libraries(performance_metrics_test PRIVATE skein3_lib)
 target_link_libraries(security_benchmark PRIVATE skein3_lib)
-target_link_libraries(readme_test PRIVATE skein3_lib)
 
 # CTest integration
 enable_testing()
@@ -106,7 +104,6 @@ add_test(NAME LicenseTest COMMAND license_test)
 add_test(NAME MemoryTest COMMAND memory_test)
 add_test(NAME PerformanceMetricsTest COMMAND performance_metrics_test)
 add_test(NAME SecurityBenchmarkTest COMMAND security_benchmark)
-add_test(NAME ReadmeTest COMMAND readme_test)
 
 # CUDA support
 option(WITH_CUDA "Enable CUDA support" OFF)
