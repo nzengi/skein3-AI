@@ -4,7 +4,7 @@
 #include <chrono>
 #include <vector>
 #include <fstream>
-#include <algorithm>  // std::generate için
+#include <algorithm>
 
 struct BenchmarkResult {
     size_t data_size;
@@ -19,11 +19,11 @@ public:
     static std::vector<BenchmarkResult> runFullBenchmark() {
         std::vector<BenchmarkResult> results;
         std::vector<size_t> test_sizes = {
-            1024,            // 1 KB
-            1024*1024,       // 1 MB
-            10*1024*1024,    // 10 MB
-            100*1024*1024,   // 100 MB
-            1024*1024*1024   // 1 GB
+            1024,
+            1024*1024,
+            10*1024*1024,
+            100*1024*1024,
+            1024*1024*1024
         };
 
         for (const auto& size : test_sizes) {
@@ -52,11 +52,10 @@ private:
         BenchmarkResult result;
         result.data_size = size;
 
-        // Create test data
         std::vector<uint8_t> data(size);
         std::generate(data.begin(), data.end(), std::rand);
-
-        // Single thread test
+    
+        Skein3::Config config;
         {
             Skein3::Config config;
             config.mode = Skein3::HashMode::STANDARD;

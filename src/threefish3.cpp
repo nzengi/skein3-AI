@@ -31,17 +31,14 @@ Threefish3::~Threefish3() = default;
 Threefish3::Threefish3(const std::array<uint64_t, NUM_WORDS>& state,
                        const std::array<uint64_t, 3>& tweak, SecurityMode mode)
     : state_(state), tweak_(tweak), mode_(mode) {
-    // Ek güvenlik kontrolleri
     if (mode == SecurityMode::QUANTUM_RESISTANT) {
         quantum_init();
     }
 }
 
 void Threefish3::quantum_init() {
-    // Quantum resistant mod için özel başlatma işlemleri
-    // Örneğin: Ekstra entropi ekleme, quantum-safe permütasyonlar vs.
     for (auto& word : state_) {
-        word ^= QUANTUM_CONSTANT;  // Özel quantum sabitiyle XOR
+        word ^= QUANTUM_CONSTANT;
     }
 }
 

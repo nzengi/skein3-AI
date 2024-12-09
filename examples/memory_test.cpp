@@ -68,7 +68,6 @@ private:
             const size_t test_size = 1024;
             auto secure_memory = std::make_unique<uint8_t[]>(test_size);
 
-            // Test verilerini güvenli şekilde doldur
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_int_distribution<uint8_t> dis;
@@ -77,20 +76,17 @@ private:
                 secure_memory[i] = dis(gen);
             }
 
-            // Koruma konfigürasyonu
             QuantumResistantMemory::ProtectionConfig config{
                 .level = QuantumResistantMemory::ProtectionLevel::ENHANCED,
                 .rounds = 3,
                 .secure_wipe = true
             };
 
-            // Bellek sınırlarını işaretle
             std::vector<uint8_t> canary(32, 0xAA);
             std::memcpy(secure_memory.get(), canary.data(), canary.size());
             std::memcpy(secure_memory.get() + test_size - canary.size(), 
                        canary.data(), canary.size());
 
-            // Bütünlük kontrolü
             bool integrity_check = QuantumResistantMemory::verifyIntegrity(
                 secure_memory.get(),
                 test_size,
@@ -103,7 +99,6 @@ private:
                 std::cout << "Memory integrity check passed\n";
             }
 
-            // Güvenli temizleme
             QuantumResistantMemory::secureWipe(secure_memory.get(), test_size);
 
         } catch (const std::exception& e) {

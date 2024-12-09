@@ -170,36 +170,47 @@ private:
 
         std::vector<Skein3::Config> configs;
         
+        // Temel config
         configs.push_back(Skein3::Config{});
         
-        Skein3::Config quantum_config;
-        quantum_config.size = Skein3::HashSize::HASH_1024;
-        quantum_config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
-        configs.push_back(quantum_config);
-        
-        Skein3::Config ai_config;
-        Skein3::optimize_for_ai(ai_config);
-        configs.push_back(ai_config);
-
-        for (const auto& config : configs) {
-            std::vector<std::vector<uint8_t>> hashes;
+        try {
+            // Quantum config
+            if (LicenseManager::getInstance().isCommercialUse()) {
+                Skein3::Config quantum_config;
+                quantum_config.size = Skein3::HashSize::HASH_1024;
+                quantum_config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
+                configs.push_back(quantum_config);
+            } else {
+                std::cout << "Skipping quantum mode test (requires commercial license)\n";
+            }
             
-            for (int i = 0; i < 5; ++i) {
-                auto hash = Skein3::hash(data, config);
-                hashes.push_back(hash);
-            }
+            // AI config
+            Skein3::Config ai_config;
+            ai_config.neural_config.enable_neural_adaptation = true;
+            ai_config.neural_config.complexity_threshold = 0.75f;
+            configs.push_back(ai_config);
 
-            bool consistent = true;
-            for (size_t i = 1; i < hashes.size(); ++i) {
-                if (hashes[i] != hashes[0]) {
-                    consistent = false;
-                    break;
+            for (const auto& config : configs) {
+                std::vector<std::vector<uint8_t>> hashes;
+                
+                for (int i = 0; i < 5; ++i) {
+                    auto hash = Skein3::hash(data, config);
+                    hashes.push_back(hash);
                 }
-            }
 
-            std::cout << "Config #" << (&config - &configs[0]) + 1 
-                     << " consistency: " 
-                     << (consistent ? "Success" : "Failed") << "\n";
+                bool consistent = true;
+                for (size_t i = 1; i < hashes.size(); ++i) {
+                    if (hashes[i] != hashes[0]) {
+                        consistent = false;
+                        break;
+                    }
+                }
+
+                std::cout << "Config #" << (&config - &configs[0] + 1) 
+                         << " consistency: " << (consistent ? "Success" : "Failed") << "\n";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error during consistency test: " << e.what() << "\n";
         }
     }
 

@@ -6,13 +6,11 @@
 
 class AIModelProtection {
 public:
-    // Model koruma fonksiyonu
     static std::vector<uint8_t> protectModel(
         const std::vector<float>& weights,
         const std::vector<uint8_t>& key
     );
 
-    // Ağırlıkları güvenli şekilde güncelleme
     static bool updateWeightsSecurely(
         std::vector<float>& weights,
         const std::vector<uint8_t>& key

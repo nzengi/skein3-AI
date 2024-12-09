@@ -401,20 +401,18 @@ std::vector<uint8_t> Skein3::process_tree_node(
     return result;
 }
 
-// AI optimizasyonları
 void Skein3::optimize_for_ai(Config& config) {
     config.opt_mode = OptimizationMode::AI_TRAINING;
     config.batch_processing = true;
     config.gpu_acceleration = true;
-    config.tree_fan_out = 16;  // Daha fazla paralellik
+    config.tree_fan_out = 16;
 }
 
-// Blockchain optimizasyonları
 void Skein3::optimize_for_blockchain(Config& config) {
     config.opt_mode = OptimizationMode::BLOCKCHAIN;
     config.merkle_tree = true;
     config.zero_knowledge = true;
-    config.tree_fan_out = 32;  // Maximum parallelism
+    config.tree_fan_out = 32;
 }
 
 // Neural adaptation functions
@@ -448,7 +446,6 @@ std::vector<uint8_t> Skein3::adaptHash(
     return NeuralHashAdapter::applyAdaptation(input, neural_context.network);
 }
 
-// Batch işleme için neural adaptation desteği
 std::vector<std::vector<uint8_t>> Skein3::batch_hash(
     const std::vector<std::vector<uint8_t>>& messages,
     const Config& config
@@ -469,7 +466,6 @@ std::vector<std::vector<uint8_t>> Skein3::batch_hash(
     return results;
 }
 
-// Neural ağ ağırlıklarını kaydetme ve yükleme fonksiyonları
 void Skein3::saveNeuralWeights(const std::string& filename) {
     if (!neural_context.is_initialized) {
         throw std::runtime_error("Neural network not initialized");
@@ -522,9 +518,7 @@ void Skein3::loadNeuralWeights(const std::string& filename) {
     file.close();
 }
 
-// Memory leak protection eklenebilir
 void Skein3::secureCleanup() {
-    // Implement secure memory cleanup
     if (!checkpoint_data_.empty()) {
         std::fill(checkpoint_data_.begin(), checkpoint_data_.end(), 0);
     }
@@ -537,11 +531,9 @@ bool Skein3::verifyHash(const std::vector<uint8_t>& message,
     return computed_hash == hash;
 }
 
-// Static üye değişkenlerin tanımı
 std::vector<uint8_t> Skein3::checkpoint_data_;
 bool Skein3::has_checkpoint_ = false;
 
-// Merkle kök hesaplama fonksiyonu
 std::vector<uint8_t> Skein3::merkle_root(
     const std::vector<std::vector<uint8_t>>& transactions,
     const Config& config
@@ -550,13 +542,11 @@ std::vector<uint8_t> Skein3::merkle_root(
         throw std::invalid_argument("Empty transaction list");
     }
 
-    // Yaprak düğümleri oluştur
     std::vector<std::vector<uint8_t>> current_level;
     for (const auto& tx : transactions) {
         current_level.push_back(hash(tx, config));
     }
 
-    // Ağacı yukarı doğru oluştur
     while (current_level.size() > 1) {
         std::vector<std::vector<uint8_t>> next_level;
         
@@ -589,7 +579,6 @@ void Skein3::process_block(
 ) {
     std::array<uint64_t, Threefish3::NUM_WORDS> block;
     
-    // Bloğu hazırla
     if (size == Threefish3::BLOCK_SIZE) {
         std::memcpy(block.data(), data, size);
     } else {
@@ -599,23 +588,19 @@ void Skein3::process_block(
                    Threefish3::BLOCK_SIZE - size);
     }
     
-    // Tweak'i güncelle
     ctx.bytes_processed += size;
     ctx.tweak[0] = ctx.bytes_processed;
     ctx.tweak[1] = (ctx.is_first ? T1_FIRST : 0) | 
                    (ctx.is_final ? T1_FINAL : 0) |
                    (ctx.domain << 56);
     
-    // Threefish3 örneği oluştur ve bloğu işle
     Threefish3 cipher(ctx.state, ctx.tweak, sec_mode);
     std::array<uint64_t, Threefish3::NUM_WORDS> cipher_text;
     cipher.encrypt(block, cipher_text);
     
-    // State'i güncelle
     for (size_t i = 0; i < Threefish3::NUM_WORDS; ++i) {
         ctx.state[i] = block[i] ^ cipher_text[i];
     }
     
-    // İlk blok bayrağını kaldır
     ctx.is_first = false;
 }

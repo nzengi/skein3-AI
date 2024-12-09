@@ -6,7 +6,6 @@
 #include <string>
 #include <chrono>
 
-// ThreatIndicator yapısını tanımlayalım
 struct ThreatIndicator {
     enum class Type {
         PATTERN_ANOMALY,
@@ -22,7 +21,6 @@ struct ThreatIndicator {
     uint64_t timestamp;
 };
 
-// SecurityMetricsImpl yapısını tanımlayalım
 struct SecurityMetricsImpl {
     float entropy_level;
     float pattern_complexity;

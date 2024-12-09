@@ -1,0 +1,1445 @@
+Start testing: Dec 09 05:55 +03
+----------------------------------------------------------
+1/13 Testing: BasicTest
+1/13 Test: BasicTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/basic_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"BasicTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Hash length: 64 bytes
+Hash value: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Hash verification successful!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTest" end time: Dec 09 05:55 +03
+"BasicTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/13 Testing: PerformanceTest
+2/13 Test: PerformanceTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/performance_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"PerformanceTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Data size: 1024 bytes
+Operation time: 3 microseconds
+Throughput: 341333333.33 bytes/second
+
+Data size: 1048576 bytes
+Operation time: 2169 microseconds
+Throughput: 483437528.82 bytes/second
+
+Data size: 10485760 bytes
+Operation time: 20830 microseconds
+Throughput: 503397023.52 bytes/second
+
+Performance Report:
+Total data processed: 11.00 MB
+Total time: 23.00 ms
+Average throughput: 501.49 MB/s
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"PerformanceTest" end time: Dec 09 05:55 +03
+"PerformanceTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/13 Testing: ParallelTest
+3/13 Test: ParallelTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/parallel_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"ParallelTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Processing time: 2 microseconds
+Hash size: 32 bytes
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ParallelTest" end time: Dec 09 05:55 +03
+"ParallelTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/13 Testing: SecurityTest
+4/13 Test: SecurityTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/security_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"SecurityTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Security Analysis Results:
+Entropy level: 0.424018
+Pattern complexity: 0.909091
+Attack probability: 0.200067
+Threat level: 1
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SecurityTest" end time: Dec 09 05:55 +03
+"SecurityTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/13 Testing: ComprehensiveTest
+5/13 Test: ComprehensiveTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/comprehensive_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"ComprehensiveTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Starting comprehensive test...
+
+1. Edge Cases Test
+Empty data hash length: 64 bytes
+Single byte hash length: 64 bytes
+Large data hashed
+
+2. Special Input Test
+All zeros hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+All ones hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Alternating pattern hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+UTF-8 hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+3. Large Data Test
+Size: 1 MB, Time: 1 ms
+Size: 10 MB, Time: 13 ms
+Size: 100 MB, Time: 138 ms
+
+4. Random Data Test
+Warning: Hash collision detected at iteration 1
+Warning: Hash collision detected at iteration 2
+Warning: Hash collision detected at iteration 3
+Warning: Hash collision detected at iteration 4
+Warning: Hash collision detected at iteration 5
+Warning: Hash collision detected at iteration 6
+Warning: Hash collision detected at iteration 7
+Warning: Hash collision detected at iteration 8
+Warning: Hash collision detected at iteration 9
+Warning: Hash collision detected at iteration 10
+Warning: Hash collision detected at iteration 11
+Warning: Hash collision detected at iteration 12
+Warning: Hash collision detected at iteration 13
+Warning: Hash collision detected at iteration 14
+Warning: Hash collision detected at iteration 15
+Warning: Hash collision detected at iteration 16
+Warning: Hash collision detected at iteration 17
+Warning: Hash collision detected at iteration 18
+Warning: Hash collision detected at iteration 19
+Warning: Hash collision detected at iteration 20
+Warning: Hash collision detected at iteration 21
+Warning: Hash collision detected at iteration 22
+Warning: Hash collision detected at iteration 23
+Warning: Hash collision detected at iteration 24
+Warning: Hash collision detected at iteration 25
+Warning: Hash collision detected at iteration 26
+Warning: Hash collision detected at iteration 27
+Warning: Hash collision detected at iteration 28
+Warning: Hash collision detected at iteration 29
+Warning: Hash collision detected at iteration 30
+Warning: Hash collision detected at iteration 31
+Warning: Hash collision detected at iteration 32
+Warning: Hash collision detected at iteration 33
+Warning: Hash collision detected at iteration 34
+Warning: Hash collision detected at iteration 35
+Warning: Hash collision detected at iteration 36
+Warning: Hash collision detected at iteration 37
+Warning: Hash collision detected at iteration 38
+Warning: Hash collision detected at iteration 39
+Warning: Hash collision detected at iteration 40
+Warning: Hash collision detected at iteration 41
+Warning: Hash collision detected at iteration 42
+Warning: Hash collision detected at iteration 43
+Warning: Hash collision detected at iteration 44
+Warning: Hash collision detected at iteration 45
+Warning: Hash collision detected at iteration 46
+Warning: Hash collision detected at iteration 47
+Warning: Hash collision detected at iteration 48
+Warning: Hash collision detected at iteration 49
+Warning: Hash collision detected at iteration 50
+Warning: Hash collision detected at iteration 51
+Warning: Hash collision detected at iteration 52
+Warning: Hash collision detected at iteration 53
+Warning: Hash collision detected at iteration 54
+Warning: Hash collision detected at iteration 55
+Warning: Hash collision detected at iteration 56
+Warning: Hash collision detected at iteration 57
+Warning: Hash collision detected at iteration 58
+Warning: Hash collision detected at iteration 59
+Warning: Hash collision detected at iteration 60
+Warning: Hash collision detected at iteration 61
+Warning: Hash collision detected at iteration 62
+Warning: Hash collision detected at iteration 63
+Warning: Hash collision detected at iteration 64
+Warning: Hash collision detected at iteration 65
+Warning: Hash collision detected at iteration 66
+Warning: Hash collision detected at iteration 67
+Warning: Hash collision detected at iteration 68
+Warning: Hash collision detected at iteration 69
+Warning: Hash collision detected at iteration 70
+Warning: Hash collision detected at iteration 71
+Warning: Hash collision detected at iteration 72
+Warning: Hash collision detected at iteration 73
+Warning: Hash collision detected at iteration 74
+Warning: Hash collision detected at iteration 75
+Warning: Hash collision detected at iteration 76
+Warning: Hash collision detected at iteration 77
+Warning: Hash collision detected at iteration 78
+Warning: Hash collision detected at iteration 79
+Warning: Hash collision detected at iteration 80
+Warning: Hash collision detected at iteration 81
+Warning: Hash collision detected at iteration 82
+Warning: Hash collision detected at iteration 83
+Warning: Hash collision detected at iteration 84
+Warning: Hash collision detected at iteration 85
+Warning: Hash collision detected at iteration 86
+Warning: Hash collision detected at iteration 87
+Warning: Hash collision detected at iteration 88
+Warning: Hash collision detected at iteration 89
+Warning: Hash collision detected at iteration 90
+Warning: Hash collision detected at iteration 91
+Warning: Hash collision detected at iteration 92
+Warning: Hash collision detected at iteration 93
+Warning: Hash collision detected at iteration 94
+Warning: Hash collision detected at iteration 95
+Warning: Hash collision detected at iteration 96
+Warning: Hash collision detected at iteration 97
+Warning: Hash collision detected at iteration 98
+Warning: Hash collision detected at iteration 99
+Warning: Hash collision detected at iteration 100
+Warning: Hash collision detected at iteration 101
+Warning: Hash collision detected at iteration 102
+Warning: Hash collision detected at iteration 103
+Warning: Hash collision detected at iteration 104
+Warning: Hash collision detected at iteration 105
+Warning: Hash collision detected at iteration 106
+Warning: Hash collision detected at iteration 107
+Warning: Hash collision detected at iteration 108
+Warning: Hash collision detected at iteration 109
+Warning: Hash collision detected at iteration 110
+Warning: Hash collision detected at iteration 111
+Warning: Hash collision detected at iteration 112
+Warning: Hash collision detected at iteration 113
+Warning: Hash collision detected at iteration 114
+Warning: Hash collision detected at iteration 115
+Warning: Hash collision detected at iteration 116
+Warning: Hash collision detected at iteration 117
+Warning: Hash collision detected at iteration 118
+Warning: Hash collision detected at iteration 119
+Warning: Hash collision detected at iteration 120
+Warning: Hash collision detected at iteration 121
+Warning: Hash collision detected at iteration 122
+Warning: Hash collision detected at iteration 123
+Warning: Hash collision detected at iteration 124
+Warning: Hash collision detected at iteration 125
+Warning: Hash collision detected at iteration 126
+Warning: Hash collision detected at iteration 127
+Warning: Hash collision detected at iteration 128
+Warning: Hash collision detected at iteration 129
+Warning: Hash collision detected at iteration 130
+Warning: Hash collision detected at iteration 131
+Warning: Hash collision detected at iteration 132
+Warning: Hash collision detected at iteration 133
+Warning: Hash collision detected at iteration 134
+Warning: Hash collision detected at iteration 135
+Warning: Hash collision detected at iteration 136
+Warning: Hash collision detected at iteration 137
+Warning: Hash collision detected at iteration 138
+Warning: Hash collision detected at iteration 139
+Warning: Hash collision detected at iteration 140
+Warning: Hash collision detected at iteration 141
+Warning: Hash collision detected at iteration 142
+Warning: Hash collision detected at iteration 143
+Warning: Hash collision detected at iteration 144
+Warning: Hash collision detected at iteration 145
+Warning: Hash collision detected at iteration 146
+Warning: Hash collision detected at iteration 147
+Warning: Hash collision detected at iteration 148
+Warning: Hash collision detected at iteration 149
+Warning: Hash collision detected at iteration 150
+Warning: Hash collision detected at iteration 151
+Warning: Hash collision detected at iteration 152
+Warning: Hash collision detected at iteration 153
+Warning: Hash collision detected at iteration 154
+Warning: Hash collision detected at iteration 155
+Warning: Hash collision detected at iteration 156
+Warning: Hash collision detected at iteration 157
+Warning: Hash collision detected at iteration 158
+Warning: Hash collision detected at iteration 159
+Warning: Hash collision detected at iteration 160
+Warning: Hash collision detected at iteration 161
+Warning: Hash collision detected at iteration 162
+Warning: Hash collision detected at iteration 163
+Warning: Hash collision detected at iteration 164
+Warning: Hash collision detected at iteration 165
+Warning: Hash collision detected at iteration 166
+Warning: Hash collision detected at iteration 167
+Warning: Hash collision detected at iteration 168
+Warning: Hash collision detected at iteration 169
+Warning: Hash collision detected at iteration 170
+Warning: Hash collision detected at iteration 171
+Warning: Hash collision detected at iteration 172
+Warning: Hash collision detected at iteration 173
+Warning: Hash collision detected at iteration 174
+Warning: Hash collision detected at iteration 175
+Warning: Hash collision detected at iteration 176
+Warning: Hash collision detected at iteration 177
+Warning: Hash collision detected at iteration 178
+Warning: Hash collision detected at iteration 179
+Warning: Hash collision detected at iteration 180
+Warning: Hash collision detected at iteration 181
+Warning: Hash collision detected at iteration 182
+Warning: Hash collision detected at iteration 183
+Warning: Hash collision detected at iteration 184
+Warning: Hash collision detected at iteration 185
+Warning: Hash collision detected at iteration 186
+Warning: Hash collision detected at iteration 187
+Warning: Hash collision detected at iteration 188
+Warning: Hash collision detected at iteration 189
+Warning: Hash collision detected at iteration 190
+Warning: Hash collision detected at iteration 191
+Warning: Hash collision detected at iteration 192
+Warning: Hash collision detected at iteration 193
+Warning: Hash collision detected at iteration 194
+Warning: Hash collision detected at iteration 195
+Warning: Hash collision detected at iteration 196
+Warning: Hash collision detected at iteration 197
+Warning: Hash collision detected at iteration 198
+Warning: Hash collision detected at iteration 199
+Warning: Hash collision detected at iteration 200
+Warning: Hash collision detected at iteration 201
+Warning: Hash collision detected at iteration 202
+Warning: Hash collision detected at iteration 203
+Warning: Hash collision detected at iteration 204
+Warning: Hash collision detected at iteration 205
+Warning: Hash collision detected at iteration 206
+Warning: Hash collision detected at iteration 207
+Warning: Hash collision detected at iteration 208
+Warning: Hash collision detected at iteration 209
+Warning: Hash collision detected at iteration 210
+Warning: Hash collision detected at iteration 211
+Warning: Hash collision detected at iteration 212
+Warning: Hash collision detected at iteration 213
+Warning: Hash collision detected at iteration 214
+Warning: Hash collision detected at iteration 215
+Warning: Hash collision detected at iteration 216
+Warning: Hash collision detected at iteration 217
+Warning: Hash collision detected at iteration 218
+Warning: Hash collision detected at iteration 219
+Warning: Hash collision detected at iteration 220
+Warning: Hash collision detected at iteration 221
+Warning: Hash collision detected at iteration 222
+Warning: Hash collision detected at iteration 223
+Warning: Hash collision detected at iteration 224
+Warning: Hash collision detected at iteration 225
+Warning: Hash collision detected at iteration 226
+Warning: Hash collision detected at iteration 227
+Warning: Hash collision detected at iteration 228
+Warning: Hash collision detected at iteration 229
+Warning: Hash collision detected at iteration 230
+Warning: Hash collision detected at iteration 231
+Warning: Hash collision detected at iteration 232
+Warning: Hash collision detected at iteration 233
+Warning: Hash collision detected at iteration 234
+Warning: Hash collision detected at iteration 235
+Warning: Hash collision detected at iteration 236
+Warning: Hash collision detected at iteration 237
+Warning: Hash collision detected at iteration 238
+Warning: Hash collision detected at iteration 239
+Warning: Hash collision detected at iteration 240
+Warning: Hash collision detected at iteration 241
+Warning: Hash collision detected at iteration 242
+Warning: Hash collision detected at iteration 243
+Warning: Hash collision detected at iteration 244
+Warning: Hash collision detected at iteration 245
+Warning: Hash collision detected at iteration 246
+Warning: Hash collision detected at iteration 247
+Warning: Hash collision detected at iteration 248
+Warning: Hash collision detected at iteration 249
+Warning: Hash collision detected at iteration 250
+Warning: Hash collision detected at iteration 251
+Warning: Hash collision detected at iteration 252
+Warning: Hash collision detected at iteration 253
+Warning: Hash collision detected at iteration 254
+Warning: Hash collision detected at iteration 255
+Warning: Hash collision detected at iteration 256
+Warning: Hash collision detected at iteration 257
+Warning: Hash collision detected at iteration 258
+Warning: Hash collision detected at iteration 259
+Warning: Hash collision detected at iteration 260
+Warning: Hash collision detected at iteration 261
+Warning: Hash collision detected at iteration 262
+Warning: Hash collision detected at iteration 263
+Warning: Hash collision detected at iteration 264
+Warning: Hash collision detected at iteration 265
+Warning: Hash collision detected at iteration 266
+Warning: Hash collision detected at iteration 267
+Warning: Hash collision detected at iteration 268
+Warning: Hash collision detected at iteration 269
+Warning: Hash collision detected at iteration 270
+Warning: Hash collision detected at iteration 271
+Warning: Hash collision detected at iteration 272
+Warning: Hash collision detected at iteration 273
+Warning: Hash collision detected at iteration 274
+Warning: Hash collision detected at iteration 275
+Warning: Hash collision detected at iteration 276
+Warning: Hash collision detected at iteration 277
+Warning: Hash collision detected at iteration 278
+Warning: Hash collision detected at iteration 279
+Warning: Hash collision detected at iteration 280
+Warning: Hash collision detected at iteration 281
+Warning: Hash collision detected at iteration 282
+Warning: Hash collision detected at iteration 283
+Warning: Hash collision detected at iteration 284
+Warning: Hash collision detected at iteration 285
+Warning: Hash collision detected at iteration 286
+Warning: Hash collision detected at iteration 287
+Warning: Hash collision detected at iteration 288
+Warning: Hash collision detected at iteration 289
+Warning: Hash collision detected at iteration 290
+Warning: Hash collision detected at iteration 291
+Warning: Hash collision detected at iteration 292
+Warning: Hash collision detected at iteration 293
+Warning: Hash collision detected at iteration 294
+Warning: Hash collision detected at iteration 295
+Warning: Hash collision detected at iteration 296
+Warning: Hash collision detected at iteration 297
+Warning: Hash collision detected at iteration 298
+Warning: Hash collision detected at iteration 299
+Warning: Hash collision detected at iteration 300
+Warning: Hash collision detected at iteration 301
+Warning: Hash collision detected at iteration 302
+Warning: Hash collision detected at iteration 303
+Warning: Hash collision detected at iteration 304
+Warning: Hash collision detected at iteration 305
+Warning: Hash collision detected at iteration 306
+Warning: Hash collision detected at iteration 307
+Warning: Hash collision detected at iteration 308
+Warning: Hash collision detected at iteration 309
+Warning: Hash collision detected at iteration 310
+Warning: Hash collision detected at iteration 311
+Warning: Hash collision detected at iteration 312
+Warning: Hash collision detected at iteration 313
+Warning: Hash collision detected at iteration 314
+Warning: Hash collision detected at iteration 315
+Warning: Hash collision detected at iteration 316
+Warning: Hash collision detected at iteration 317
+Warning: Hash collision detected at iteration 318
+Warning: Hash collision detected at iteration 319
+Warning: Hash collision detected at iteration 320
+Warning: Hash collision detected at iteration 321
+Warning: Hash collision detected at iteration 322
+Warning: Hash collision detected at iteration 323
+Warning: Hash collision detected at iteration 324
+Warning: Hash collision detected at iteration 325
+Warning: Hash collision detected at iteration 326
+Warning: Hash collision detected at iteration 327
+Warning: Hash collision detected at iteration 328
+Warning: Hash collision detected at iteration 329
+Warning: Hash collision detected at iteration 330
+Warning: Hash collision detected at iteration 331
+Warning: Hash collision detected at iteration 332
+Warning: Hash collision detected at iteration 333
+Warning: Hash collision detected at iteration 334
+Warning: Hash collision detected at iteration 335
+Warning: Hash collision detected at iteration 336
+Warning: Hash collision detected at iteration 337
+Warning: Hash collision detected at iteration 338
+Warning: Hash collision detected at iteration 339
+Warning: Hash collision detected at iteration 340
+Warning: Hash collision detected at iteration 341
+Warning: Hash collision detected at iteration 342
+Warning: Hash collision detected at iteration 343
+Warning: Hash collision detected at iteration 344
+Warning: Hash collision detected at iteration 345
+Warning: Hash collision detected at iteration 346
+Warning: Hash collision detected at iteration 347
+Warning: Hash collision detected at iteration 348
+Warning: Hash collision detected at iteration 349
+Warning: Hash collision detected at iteration 350
+Warning: Hash collision detected at iteration 351
+Warning: Hash collision detected at iteration 352
+Warning: Hash collision detected at iteration 353
+Warning: Hash collision detected at iteration 354
+Warning: Hash collision detected at iteration 355
+Warning: Hash collision detected at iteration 356
+Warning: Hash collision detected at iteration 357
+Warning: Hash collision detected at iteration 358
+Warning: Hash collision detected at iteration 359
+Warning: Hash collision detected at iteration 360
+Warning: Hash collision detected at iteration 361
+Warning: Hash collision detected at iteration 362
+Warning: Hash collision detected at iteration 363
+Warning: Hash collision detected at iteration 364
+Warning: Hash collision detected at iteration 365
+Warning: Hash collision detected at iteration 366
+Warning: Hash collision detected at iteration 367
+Warning: Hash collision detected at iteration 368
+Warning: Hash collision detected at iteration 369
+Warning: Hash collision detected at iteration 370
+Warning: Hash collision detected at iteration 371
+Warning: Hash collision detected at iteration 372
+Warning: Hash collision detected at iteration 373
+Warning: Hash collision detected at iteration 374
+Warning: Hash collision detected at iteration 375
+Warning: Hash collision detected at iteration 376
+Warning: Hash collision detected at iteration 377
+Warning: Hash collision detected at iteration 378
+Warning: Hash collision detected at iteration 379
+Warning: Hash collision detected at iteration 380
+Warning: Hash collision detected at iteration 381
+Warning: Hash collision detected at iteration 382
+Warning: Hash collision detected at iteration 383
+Warning: Hash collision detected at iteration 384
+Warning: Hash collision detected at iteration 385
+Warning: Hash collision detected at iteration 386
+Warning: Hash collision detected at iteration 387
+Warning: Hash collision detected at iteration 388
+Warning: Hash collision detected at iteration 389
+Warning: Hash collision detected at iteration 390
+Warning: Hash collision detected at iteration 391
+Warning: Hash collision detected at iteration 392
+Warning: Hash collision detected at iteration 393
+Warning: Hash collision detected at iteration 394
+Warning: Hash collision detected at iteration 395
+Warning: Hash collision detected at iteration 396
+Warning: Hash collision detected at iteration 397
+Warning: Hash collision detected at iteration 398
+Warning: Hash collision detected at iteration 399
+Warning: Hash collision detected at iteration 400
+Warning: Hash collision detected at iteration 401
+Warning: Hash collision detected at iteration 402
+Warning: Hash collision detected at iteration 403
+Warning: Hash collision detected at iteration 404
+Warning: Hash collision detected at iteration 405
+Warning: Hash collision detected at iteration 406
+Warning: Hash collision detected at iteration 407
+Warning: Hash collision detected at iteration 408
+Warning: Hash collision detected at iteration 409
+Warning: Hash collision detected at iteration 410
+Warning: Hash collision detected at iteration 411
+Warning: Hash collision detected at iteration 412
+Warning: Hash collision detected at iteration 413
+Warning: Hash collision detected at iteration 414
+Warning: Hash collision detected at iteration 415
+Warning: Hash collision detected at iteration 416
+Warning: Hash collision detected at iteration 417
+Warning: Hash collision detected at iteration 418
+Warning: Hash collision detected at iteration 419
+Warning: Hash collision detected at iteration 420
+Warning: Hash collision detected at iteration 421
+Warning: Hash collision detected at iteration 422
+Warning: Hash collision detected at iteration 423
+Warning: Hash collision detected at iteration 424
+Warning: Hash collision detected at iteration 425
+Warning: Hash collision detected at iteration 426
+Warning: Hash collision detected at iteration 427
+Warning: Hash collision detected at iteration 428
+Warning: Hash collision detected at iteration 429
+Warning: Hash collision detected at iteration 430
+Warning: Hash collision detected at iteration 431
+Warning: Hash collision detected at iteration 432
+Warning: Hash collision detected at iteration 433
+Warning: Hash collision detected at iteration 434
+Warning: Hash collision detected at iteration 435
+Warning: Hash collision detected at iteration 436
+Warning: Hash collision detected at iteration 437
+Warning: Hash collision detected at iteration 438
+Warning: Hash collision detected at iteration 439
+Warning: Hash collision detected at iteration 440
+Warning: Hash collision detected at iteration 441
+Warning: Hash collision detected at iteration 442
+Warning: Hash collision detected at iteration 443
+Warning: Hash collision detected at iteration 444
+Warning: Hash collision detected at iteration 445
+Warning: Hash collision detected at iteration 446
+Warning: Hash collision detected at iteration 447
+Warning: Hash collision detected at iteration 448
+Warning: Hash collision detected at iteration 449
+Warning: Hash collision detected at iteration 450
+Warning: Hash collision detected at iteration 451
+Warning: Hash collision detected at iteration 452
+Warning: Hash collision detected at iteration 453
+Warning: Hash collision detected at iteration 454
+Warning: Hash collision detected at iteration 455
+Warning: Hash collision detected at iteration 456
+Warning: Hash collision detected at iteration 457
+Warning: Hash collision detected at iteration 458
+Warning: Hash collision detected at iteration 459
+Warning: Hash collision detected at iteration 460
+Warning: Hash collision detected at iteration 461
+Warning: Hash collision detected at iteration 462
+Warning: Hash collision detected at iteration 463
+Warning: Hash collision detected at iteration 464
+Warning: Hash collision detected at iteration 465
+Warning: Hash collision detected at iteration 466
+Warning: Hash collision detected at iteration 467
+Warning: Hash collision detected at iteration 468
+Warning: Hash collision detected at iteration 469
+Warning: Hash collision detected at iteration 470
+Warning: Hash collision detected at iteration 471
+Warning: Hash collision detected at iteration 472
+Warning: Hash collision detected at iteration 473
+Warning: Hash collision detected at iteration 474
+Warning: Hash collision detected at iteration 475
+Warning: Hash collision detected at iteration 476
+Warning: Hash collision detected at iteration 477
+Warning: Hash collision detected at iteration 478
+Warning: Hash collision detected at iteration 479
+Warning: Hash collision detected at iteration 480
+Warning: Hash collision detected at iteration 481
+Warning: Hash collision detected at iteration 482
+Warning: Hash collision detected at iteration 483
+Warning: Hash collision detected at iteration 484
+Warning: Hash collision detected at iteration 485
+Warning: Hash collision detected at iteration 486
+Warning: Hash collision detected at iteration 487
+Warning: Hash collision detected at iteration 488
+Warning: Hash collision detected at iteration 489
+Warning: Hash collision detected at iteration 490
+Warning: Hash collision detected at iteration 491
+Warning: Hash collision detected at iteration 492
+Warning: Hash collision detected at iteration 493
+Warning: Hash collision detected at iteration 494
+Warning: Hash collision detected at iteration 495
+Warning: Hash collision detected at iteration 496
+Warning: Hash collision detected at iteration 497
+Warning: Hash collision detected at iteration 498
+Warning: Hash collision detected at iteration 499
+Warning: Hash collision detected at iteration 500
+Warning: Hash collision detected at iteration 501
+Warning: Hash collision detected at iteration 502
+Warning: Hash collision detected at iteration 503
+Warning: Hash collision detected at iteration 504
+Warning: Hash collision detected at iteration 505
+Warning: Hash collision detected at iteration 506
+Warning: Hash collision detected at iteration 507
+Warning: Hash collision detected at iteration 508
+Warning: Hash collision detected at iteration 509
+Warning: Hash collision detected at iteration 510
+Warning: Hash collision detected at iteration 511
+Warning: Hash collision detected at iteration 512
+Warning: Hash collision detected at iteration 513
+Warning: Hash collision detected at iteration 514
+Warning: Hash collision detected at iteration 515
+Warning: Hash collision detected at iteration 516
+Warning: Hash collision detected at iteration 517
+Warning: Hash collision detected at iteration 518
+Warning: Hash collision detected at iteration 519
+Warning: Hash collision detected at iteration 520
+Warning: Hash collision detected at iteration 521
+Warning: Hash collision detected at iteration 522
+Warning: Hash collision detected at iteration 523
+Warning: Hash collision detected at iteration 524
+Warning: Hash collision detected at iteration 525
+Warning: Hash collision detected at iteration 526
+Warning: Hash collision detected at iteration 527
+Warning: Hash collision detected at iteration 528
+Warning: Hash collision detected at iteration 529
+Warning: Hash collision detected at iteration 530
+Warning: Hash collision detected at iteration 531
+Warning: Hash collision detected at iteration 532
+Warning: Hash collision detected at iteration 533
+Warning: Hash collision detected at iteration 534
+Warning: Hash collision detected at iteration 535
+Warning: Hash collision detected at iteration 536
+Warning: Hash collision detected at iteration 537
+Warning: Hash collision detected at iteration 538
+Warning: Hash collision detected at iteration 539
+Warning: Hash collision detected at iteration 540
+Warning: Hash collision detected at iteration 541
+Warning: Hash collision detected at iteration 542
+Warning: Hash collision detected at iteration 543
+Warning: Hash collision detected at iteration 544
+Warning: Hash collision detected at iteration 545
+Warning: Hash collision detected at iteration 546
+Warning: Hash collision detected at iteration 547
+Warning: Hash collision detected at iteration 548
+Warning: Hash collision detected at iteration 549
+Warning: Hash collision detected at iteration 550
+Warning: Hash collision detected at iteration 551
+Warning: Hash collision detected at iteration 552
+Warning: Hash collision detected at iteration 553
+Warning: Hash collision detected at iteration 554
+Warning: Hash collision detected at iteration 555
+Warning: Hash collision detected at iteration 556
+Warning: Hash collision detected at iteration 557
+Warning: Hash collision detected at iteration 558
+Warning: Hash collision detected at iteration 559
+Warning: Hash collision detected at iteration 560
+Warning: Hash collision detected at iteration 561
+Warning: Hash collision detected at iteration 562
+Warning: Hash collision detected at iteration 563
+Warning: Hash collision detected at iteration 564
+Warning: Hash collision detected at iteration 565
+Warning: Hash collision detected at iteration 566
+Warning: Hash collision detected at iteration 567
+Warning: Hash collision detected at iteration 568
+Warning: Hash collision detected at iteration 569
+Warning: Hash collision detected at iteration 570
+Warning: Hash collision detected at iteration 571
+Warning: Hash collision detected at iteration 572
+Warning: Hash collision detected at iteration 573
+Warning: Hash collision detected at iteration 574
+Warning: Hash collision detected at iteration 575
+Warning: Hash collision detected at iteration 576
+Warning: Hash collision detected at iteration 577
+Warning: Hash collision detected at iteration 578
+Warning: Hash collision detected at iteration 579
+Warning: Hash collision detected at iteration 580
+Warning: Hash collision detected at iteration 581
+Warning: Hash collision detected at iteration 582
+Warning: Hash collision detected at iteration 583
+Warning: Hash collision detected at iteration 584
+Warning: Hash collision detected at iteration 585
+Warning: Hash collision detected at iteration 586
+Warning: Hash collision detected at iteration 587
+Warning: Hash collision detected at iteration 588
+Warning: Hash collision detected at iteration 589
+Warning: Hash collision detected at iteration 590
+Warning: Hash collision detected at iteration 591
+Warning: Hash collision detected at iteration 592
+Warning: Hash collision detected at iteration 593
+Warning: Hash collision detected at iteration 594
+Warning: Hash collision detected at iteration 595
+Warning: Hash collision detected at iteration 596
+Warning: Hash collision detected at iteration 597
+Warning: Hash collision detected at iteration 598
+Warning: Hash collision detected at iteration 599
+Warning: Hash collision detected at iteration 600
+Warning: Hash collision detected at iteration 601
+Warning: Hash collision detected at iteration 602
+Warning: Hash collision detected at iteration 603
+Warning: Hash collision detected at iteration 604
+Warning: Hash collision detected at iteration 605
+Warning: Hash collision detected at iteration 606
+Warning: Hash collision detected at iteration 607
+Warning: Hash collision detected at iteration 608
+Warning: Hash collision detected at iteration 609
+Warning: Hash collision detected at iteration 610
+Warning: Hash collision detected at iteration 611
+Warning: Hash collision detected at iteration 612
+Warning: Hash collision detected at iteration 613
+Warning: Hash collision detected at iteration 614
+Warning: Hash collision detected at iteration 615
+Warning: Hash collision detected at iteration 616
+Warning: Hash collision detected at iteration 617
+Warning: Hash collision detected at iteration 618
+Warning: Hash collision detected at iteration 619
+Warning: Hash collision detected at iteration 620
+Warning: Hash collision detected at iteration 621
+Warning: Hash collision detected at iteration 622
+Warning: Hash collision detected at iteration 623
+Warning: Hash collision detected at iteration 624
+Warning: Hash collision detected at iteration 625
+Warning: Hash collision detected at iteration 626
+Warning: Hash collision detected at iteration 627
+Warning: Hash collision detected at iteration 628
+Warning: Hash collision detected at iteration 629
+Warning: Hash collision detected at iteration 630
+Warning: Hash collision detected at iteration 631
+Warning: Hash collision detected at iteration 632
+Warning: Hash collision detected at iteration 633
+Warning: Hash collision detected at iteration 634
+Warning: Hash collision detected at iteration 635
+Warning: Hash collision detected at iteration 636
+Warning: Hash collision detected at iteration 637
+Warning: Hash collision detected at iteration 638
+Warning: Hash collision detected at iteration 639
+Warning: Hash collision detected at iteration 640
+Warning: Hash collision detected at iteration 641
+Warning: Hash collision detected at iteration 642
+Warning: Hash collision detected at iteration 643
+Warning: Hash collision detected at iteration 644
+Warning: Hash collision detected at iteration 645
+Warning: Hash collision detected at iteration 646
+Warning: Hash collision detected at iteration 647
+Warning: Hash collision detected at iteration 648
+Warning: Hash collision detected at iteration 649
+Warning: Hash collision detected at iteration 650
+Warning: Hash collision detected at iteration 651
+Warning: Hash collision detected at iteration 652
+Warning: Hash collision detected at iteration 653
+Warning: Hash collision detected at iteration 654
+Warning: Hash collision detected at iteration 655
+Warning: Hash collision detected at iteration 656
+Warning: Hash collision detected at iteration 657
+Warning: Hash collision detected at iteration 658
+Warning: Hash collision detected at iteration 659
+Warning: Hash collision detected at iteration 660
+Warning: Hash collision detected at iteration 661
+Warning: Hash collision detected at iteration 662
+Warning: Hash collision detected at iteration 663
+Warning: Hash collision detected at iteration 664
+Warning: Hash collision detected at iteration 665
+Warning: Hash collision detected at iteration 666
+Warning: Hash collision detected at iteration 667
+Warning: Hash collision detected at iteration 668
+Warning: Hash collision detected at iteration 669
+Warning: Hash collision detected at iteration 670
+Warning: Hash collision detected at iteration 671
+Warning: Hash collision detected at iteration 672
+Warning: Hash collision detected at iteration 673
+Warning: Hash collision detected at iteration 674
+Warning: Hash collision detected at iteration 675
+Warning: Hash collision detected at iteration 676
+Warning: Hash collision detected at iteration 677
+Warning: Hash collision detected at iteration 678
+Warning: Hash collision detected at iteration 679
+Warning: Hash collision detected at iteration 680
+Warning: Hash collision detected at iteration 681
+Warning: Hash collision detected at iteration 682
+Warning: Hash collision detected at iteration 683
+Warning: Hash collision detected at iteration 684
+Warning: Hash collision detected at iteration 685
+Warning: Hash collision detected at iteration 686
+Warning: Hash collision detected at iteration 687
+Warning: Hash collision detected at iteration 688
+Warning: Hash collision detected at iteration 689
+Warning: Hash collision detected at iteration 690
+Warning: Hash collision detected at iteration 691
+Warning: Hash collision detected at iteration 692
+Warning: Hash collision detected at iteration 693
+Warning: Hash collision detected at iteration 694
+Warning: Hash collision detected at iteration 695
+Warning: Hash collision detected at iteration 696
+Warning: Hash collision detected at iteration 697
+Warning: Hash collision detected at iteration 698
+Warning: Hash collision detected at iteration 699
+Warning: Hash collision detected at iteration 700
+Warning: Hash collision detected at iteration 701
+Warning: Hash collision detected at iteration 702
+Warning: Hash collision detected at iteration 703
+Warning: Hash collision detected at iteration 704
+Warning: Hash collision detected at iteration 705
+Warning: Hash collision detected at iteration 706
+Warning: Hash collision detected at iteration 707
+Warning: Hash collision detected at iteration 708
+Warning: Hash collision detected at iteration 709
+Warning: Hash collision detected at iteration 710
+Warning: Hash collision detected at iteration 711
+Warning: Hash collision detected at iteration 712
+Warning: Hash collision detected at iteration 713
+Warning: Hash collision detected at iteration 714
+Warning: Hash collision detected at iteration 715
+Warning: Hash collision detected at iteration 716
+Warning: Hash collision detected at iteration 717
+Warning: Hash collision detected at iteration 718
+Warning: Hash collision detected at iteration 719
+Warning: Hash collision detected at iteration 720
+Warning: Hash collision detected at iteration 721
+Warning: Hash collision detected at iteration 722
+Warning: Hash collision detected at iteration 723
+Warning: Hash collision detected at iteration 724
+Warning: Hash collision detected at iteration 725
+Warning: Hash collision detected at iteration 726
+Warning: Hash collision detected at iteration 727
+Warning: Hash collision detected at iteration 728
+Warning: Hash collision detected at iteration 729
+Warning: Hash collision detected at iteration 730
+Warning: Hash collision detected at iteration 731
+Warning: Hash collision detected at iteration 732
+Warning: Hash collision detected at iteration 733
+Warning: Hash collision detected at iteration 734
+Warning: Hash collision detected at iteration 735
+Warning: Hash collision detected at iteration 736
+Warning: Hash collision detected at iteration 737
+Warning: Hash collision detected at iteration 738
+Warning: Hash collision detected at iteration 739
+Warning: Hash collision detected at iteration 740
+Warning: Hash collision detected at iteration 741
+Warning: Hash collision detected at iteration 742
+Warning: Hash collision detected at iteration 743
+Warning: Hash collision detected at iteration 744
+Warning: Hash collision detected at iteration 745
+Warning: Hash collision detected at iteration 746
+Warning: Hash collision detected at iteration 747
+Warning: Hash collision detected at iteration 748
+Warning: Hash collision detected at iteration 749
+Warning: Hash collision detected at iteration 750
+Warning: Hash collision detected at iteration 751
+Warning: Hash collision detected at iteration 752
+Warning: Hash collision detected at iteration 753
+Warning: Hash collision detected at iteration 754
+Warning: Hash collision detected at iteration 755
+Warning: Hash collision detected at iteration 756
+Warning: Hash collision detected at iteration 757
+Warning: Hash collision detected at iteration 758
+Warning: Hash collision detected at iteration 759
+Warning: Hash collision detected at iteration 760
+Warning: Hash collision detected at iteration 761
+Warning: Hash collision detected at iteration 762
+Warning: Hash collision detected at iteration 763
+Warning: Hash collision detected at iteration 764
+Warning: Hash collision detected at iteration 765
+Warning: Hash collision detected at iteration 766
+Warning: Hash collision detected at iteration 767
+Warning: Hash collision detected at iteration 768
+Warning: Hash collision detected at iteration 769
+Warning: Hash collision detected at iteration 770
+Warning: Hash collision detected at iteration 771
+Warning: Hash collision detected at iteration 772
+Warning: Hash collision detected at iteration 773
+Warning: Hash collision detected at iteration 774
+Warning: Hash collision detected at iteration 775
+Warning: Hash collision detected at iteration 776
+Warning: Hash collision detected at iteration 777
+Warning: Hash collision detected at iteration 778
+Warning: Hash collision detected at iteration 779
+Warning: Hash collision detected at iteration 780
+Warning: Hash collision detected at iteration 781
+Warning: Hash collision detected at iteration 782
+Warning: Hash collision detected at iteration 783
+Warning: Hash collision detected at iteration 784
+Warning: Hash collision detected at iteration 785
+Warning: Hash collision detected at iteration 786
+Warning: Hash collision detected at iteration 787
+Warning: Hash collision detected at iteration 788
+Warning: Hash collision detected at iteration 789
+Warning: Hash collision detected at iteration 790
+Warning: Hash collision detected at iteration 791
+Warning: Hash collision detected at iteration 792
+Warning: Hash collision detected at iteration 793
+Warning: Hash collision detected at iteration 794
+Warning: Hash collision detected at iteration 795
+Warning: Hash collision detected at iteration 796
+Warning: Hash collision detected at iteration 797
+Warning: Hash collision detected at iteration 798
+Warning: Hash collision detected at iteration 799
+Warning: Hash collision detected at iteration 800
+Warning: Hash collision detected at iteration 801
+Warning: Hash collision detected at iteration 802
+Warning: Hash collision detected at iteration 803
+Warning: Hash collision detected at iteration 804
+Warning: Hash collision detected at iteration 805
+Warning: Hash collision detected at iteration 806
+Warning: Hash collision detected at iteration 807
+Warning: Hash collision detected at iteration 808
+Warning: Hash collision detected at iteration 809
+Warning: Hash collision detected at iteration 810
+Warning: Hash collision detected at iteration 811
+Warning: Hash collision detected at iteration 812
+Warning: Hash collision detected at iteration 813
+Warning: Hash collision detected at iteration 814
+Warning: Hash collision detected at iteration 815
+Warning: Hash collision detected at iteration 816
+Warning: Hash collision detected at iteration 817
+Warning: Hash collision detected at iteration 818
+Warning: Hash collision detected at iteration 819
+Warning: Hash collision detected at iteration 820
+Warning: Hash collision detected at iteration 821
+Warning: Hash collision detected at iteration 822
+Warning: Hash collision detected at iteration 823
+Warning: Hash collision detected at iteration 824
+Warning: Hash collision detected at iteration 825
+Warning: Hash collision detected at iteration 826
+Warning: Hash collision detected at iteration 827
+Warning: Hash collision detected at iteration 828
+Warning: Hash collision detected at iteration 829
+Warning: Hash collision detected at iteration 830
+Warning: Hash collision detected at iteration 831
+Warning: Hash collision detected at iteration 832
+Warning: Hash collision detected at iteration 833
+Warning: Hash collision detected at iteration 834
+Warning: Hash collision detected at iteration 835
+Warning: Hash collision detected at iteration 836
+Warning: Hash collision detected at iteration 837
+Warning: Hash collision detected at iteration 838
+Warning: Hash collision detected at iteration 839
+Warning: Hash collision detected at iteration 840
+Warning: Hash collision detected at iteration 841
+Warning: Hash collision detected at iteration 842
+Warning: Hash collision detected at iteration 843
+Warning: Hash collision detected at iteration 844
+Warning: Hash collision detected at iteration 845
+Warning: Hash collision detected at iteration 846
+Warning: Hash collision detected at iteration 847
+Warning: Hash collision detected at iteration 848
+Warning: Hash collision detected at iteration 849
+Warning: Hash collision detected at iteration 850
+Warning: Hash collision detected at iteration 851
+Warning: Hash collision detected at iteration 852
+Warning: Hash collision detected at iteration 853
+Warning: Hash collision detected at iteration 854
+Warning: Hash collision detected at iteration 855
+Warning: Hash collision detected at iteration 856
+Warning: Hash collision detected at iteration 857
+Warning: Hash collision detected at iteration 858
+Warning: Hash collision detected at iteration 859
+Warning: Hash collision detected at iteration 860
+Warning: Hash collision detected at iteration 861
+Warning: Hash collision detected at iteration 862
+Warning: Hash collision detected at iteration 863
+Warning: Hash collision detected at iteration 864
+Warning: Hash collision detected at iteration 865
+Warning: Hash collision detected at iteration 866
+Warning: Hash collision detected at iteration 867
+Warning: Hash collision detected at iteration 868
+Warning: Hash collision detected at iteration 869
+Warning: Hash collision detected at iteration 870
+Warning: Hash collision detected at iteration 871
+Warning: Hash collision detected at iteration 872
+Warning: Hash collision detected at iteration 873
+Warning: Hash collision detected at iteration 874
+Warning: Hash collision detected at iteration 875
+Warning: Hash collision detected at iteration 876
+Warning: Hash collision detected at iteration 877
+Warning: Hash collision detected at iteration 878
+Warning: Hash collision detected at iteration 879
+Warning: Hash collision detected at iteration 880
+Warning: Hash collision detected at iteration 881
+Warning: Hash collision detected at iteration 882
+Warning: Hash collision detected at iteration 883
+Warning: Hash collision detected at iteration 884
+Warning: Hash collision detected at iteration 885
+Warning: Hash collision detected at iteration 886
+Warning: Hash collision detected at iteration 887
+Warning: Hash collision detected at iteration 888
+Warning: Hash collision detected at iteration 889
+Warning: Hash collision detected at iteration 890
+Warning: Hash collision detected at iteration 891
+Warning: Hash collision detected at iteration 892
+Warning: Hash collision detected at iteration 893
+Warning: Hash collision detected at iteration 894
+Warning: Hash collision detected at iteration 895
+Warning: Hash collision detected at iteration 896
+Warning: Hash collision detected at iteration 897
+Warning: Hash collision detected at iteration 898
+Warning: Hash collision detected at iteration 899
+Warning: Hash collision detected at iteration 900
+Warning: Hash collision detected at iteration 901
+Warning: Hash collision detected at iteration 902
+Warning: Hash collision detected at iteration 903
+Warning: Hash collision detected at iteration 904
+Warning: Hash collision detected at iteration 905
+Warning: Hash collision detected at iteration 906
+Warning: Hash collision detected at iteration 907
+Warning: Hash collision detected at iteration 908
+Warning: Hash collision detected at iteration 909
+Warning: Hash collision detected at iteration 910
+Warning: Hash collision detected at iteration 911
+Warning: Hash collision detected at iteration 912
+Warning: Hash collision detected at iteration 913
+Warning: Hash collision detected at iteration 914
+Warning: Hash collision detected at iteration 915
+Warning: Hash collision detected at iteration 916
+Warning: Hash collision detected at iteration 917
+Warning: Hash collision detected at iteration 918
+Warning: Hash collision detected at iteration 919
+Warning: Hash collision detected at iteration 920
+Warning: Hash collision detected at iteration 921
+Warning: Hash collision detected at iteration 922
+Warning: Hash collision detected at iteration 923
+Warning: Hash collision detected at iteration 924
+Warning: Hash collision detected at iteration 925
+Warning: Hash collision detected at iteration 926
+Warning: Hash collision detected at iteration 927
+Warning: Hash collision detected at iteration 928
+Warning: Hash collision detected at iteration 929
+Warning: Hash collision detected at iteration 930
+Warning: Hash collision detected at iteration 931
+Warning: Hash collision detected at iteration 932
+Warning: Hash collision detected at iteration 933
+Warning: Hash collision detected at iteration 934
+Warning: Hash collision detected at iteration 935
+Warning: Hash collision detected at iteration 936
+Warning: Hash collision detected at iteration 937
+Warning: Hash collision detected at iteration 938
+Warning: Hash collision detected at iteration 939
+Warning: Hash collision detected at iteration 940
+Warning: Hash collision detected at iteration 941
+Warning: Hash collision detected at iteration 942
+Warning: Hash collision detected at iteration 943
+Warning: Hash collision detected at iteration 944
+Warning: Hash collision detected at iteration 945
+Warning: Hash collision detected at iteration 946
+Warning: Hash collision detected at iteration 947
+Warning: Hash collision detected at iteration 948
+Warning: Hash collision detected at iteration 949
+Warning: Hash collision detected at iteration 950
+Warning: Hash collision detected at iteration 951
+Warning: Hash collision detected at iteration 952
+Warning: Hash collision detected at iteration 953
+Warning: Hash collision detected at iteration 954
+Warning: Hash collision detected at iteration 955
+Warning: Hash collision detected at iteration 956
+Warning: Hash collision detected at iteration 957
+Warning: Hash collision detected at iteration 958
+Warning: Hash collision detected at iteration 959
+Warning: Hash collision detected at iteration 960
+Warning: Hash collision detected at iteration 961
+Warning: Hash collision detected at iteration 962
+Warning: Hash collision detected at iteration 963
+Warning: Hash collision detected at iteration 964
+Warning: Hash collision detected at iteration 965
+Warning: Hash collision detected at iteration 966
+Warning: Hash collision detected at iteration 967
+Warning: Hash collision detected at iteration 968
+Warning: Hash collision detected at iteration 969
+Warning: Hash collision detected at iteration 970
+Warning: Hash collision detected at iteration 971
+Warning: Hash collision detected at iteration 972
+Warning: Hash collision detected at iteration 973
+Warning: Hash collision detected at iteration 974
+Warning: Hash collision detected at iteration 975
+Warning: Hash collision detected at iteration 976
+Warning: Hash collision detected at iteration 977
+Warning: Hash collision detected at iteration 978
+Warning: Hash collision detected at iteration 979
+Warning: Hash collision detected at iteration 980
+Warning: Hash collision detected at iteration 981
+Warning: Hash collision detected at iteration 982
+Warning: Hash collision detected at iteration 983
+Warning: Hash collision detected at iteration 984
+Warning: Hash collision detected at iteration 985
+Warning: Hash collision detected at iteration 986
+Warning: Hash collision detected at iteration 987
+Warning: Hash collision detected at iteration 988
+Warning: Hash collision detected at iteration 989
+Warning: Hash collision detected at iteration 990
+Warning: Hash collision detected at iteration 991
+Warning: Hash collision detected at iteration 992
+Warning: Hash collision detected at iteration 993
+Warning: Hash collision detected at iteration 994
+Warning: Hash collision detected at iteration 995
+Warning: Hash collision detected at iteration 996
+Warning: Hash collision detected at iteration 997
+Warning: Hash collision detected at iteration 998
+Warning: Hash collision detected at iteration 999
+Collision found! Hash repeat count: 1000
+
+5. Consistency Test
+Skipping quantum mode test (requires commercial license)
+Config #1 consistency: Success
+Config #2 consistency: Success
+<end of output>
+Test time =   4.77 sec
+----------------------------------------------------------
+Test Passed.
+"ComprehensiveTest" end time: Dec 09 05:55 +03
+"ComprehensiveTest" time elapsed: 00:00:04
+----------------------------------------------------------
+
+6/13 Testing: CustomizationTest
+6/13 Test: CustomizationTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/customization_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"CustomizationTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Starting customization tests...
+
+1. Custom Hash Modes Test
+Blockchain mode hash size: 64
+IoT mode hash size: 32
+Real-time mode hash size: 64
+
+2. Callback Functions Test
+Callback called, data size: 5
+Callback status: Success
+
+3. Extension Test
+Extended hash size: 64
+
+4. Optimization Test
+Normal mode duration: 2ms
+Optimized mode duration: 1ms
+
+5. Integration Test
+Chunk 1 processed, hash size: 64
+Chunk 2 processed, hash size: 64
+Chunk 3 processed, hash size: 64
+Chunk 4 processed, hash size: 64
+Chunk 5 processed, hash size: 64
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"CustomizationTest" end time: Dec 09 05:55 +03
+"CustomizationTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/13 Testing: ErrorHandlingTest
+7/13 Test: ErrorHandlingTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/error_handling_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"ErrorHandlingTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Starting error handling tests...
+
+1. Configuration Errors Test
+Error: Invalid size accepted!
+Error: Invalid thread count accepted!
+
+2. Memory Errors Test
+Successfully processed 104857600 bytes
+
+3. Validation Errors Test
+Empty data processed, hash size: 64
+Expected validation error: Hash validation failed
+
+4. Recovery Mechanisms Test
+Successful recovery, data size: 1048576
+
+5. Error Logging Test
+Total log count: 2
+Type: Configuration, Message: Test configuration error
+Type: Memory, Message: Test memory error
+<end of output>
+Test time =   0.20 sec
+----------------------------------------------------------
+Test Passed.
+"ErrorHandlingTest" end time: Dec 09 05:55 +03
+"ErrorHandlingTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/13 Testing: IntegrationTest
+8/13 Test: IntegrationTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/integration_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"IntegrationTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Starting integration tests...
+
+
+Test: API_Basic
+Description: Basic API usage
+Result: ❌ Failed
+
+Test: File_Integration
+Description: File system integration
+Result: ✅ Success
+
+Test: Stream_Processing
+Description: Stream processing integration
+Result: ✅ Success
+
+Test: Error_Handling
+Description: Error handling
+Result: ❌ Failed
+
+Test: Config_Management
+Description: Configuration management
+Result: ✅ Success
+
+Total Result:
+Success: 3
+Failed: 2
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"IntegrationTest" end time: Dec 09 05:55 +03
+"IntegrationTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/13 Testing: LicenseTest
+9/13 Test: LicenseTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/license_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"LicenseTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Starting license tests...
+
+1. License Validation Test
+Error: Invalid license key
+Expected error: Invalid license key
+
+2. Feature Access Test
+Quantum Resistance access: Success
+Parallel Processing access: Success
+AI Optimization access: Success
+
+3. License Expiry Test
+License check: Success
+Expired license check: Success
+
+4. Concurrent Use Test
+Successful operations: 4/4
+
+5. License Upgrade Test
+License upgrade error: Invalid license key
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"LicenseTest" end time: Dec 09 05:55 +03
+"LicenseTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/13 Testing: MemoryTest
+10/13 Test: MemoryTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/memory_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"MemoryTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Memory tests starting...
+
+1. Basic Memory Operations Test
+
+Size: 0.000976562 MB
+Allocated: 1024 bytes
+Peak usage: 0 bytes
+Cleanup time: 0.030267 ms
+
+Size: 1 MB
+Allocated: 1048576 bytes
+Peak usage: 1052672 bytes
+Cleanup time: 20.3342 ms
+
+Size: 10 MB
+Allocated: 10485760 bytes
+Peak usage: 10489856 bytes
+Cleanup time: 209.255 ms
+
+Size: 100 MB
+Allocated: 104857600 bytes
+Peak usage: 104861696 bytes
+Cleanup time: 1899.6 ms
+
+2. Secure Memory Protection Test
+Memory integrity check passed
+
+3. Memory Leak Test
+Initial memory usage: 6606848 bytes
+Final memory usage: 7733248 bytes
+Difference: 1126400 bytes
+
+4. Concurrent Memory Access Test
+Concurrent access test: Success
+
+5. Memory Boundaries Test
+Trying to allocate 10GB memory...
+Large memory allocation successful
+Zero size allocation successful
+<end of output>
+Test time =   8.01 sec
+----------------------------------------------------------
+Test Passed.
+"MemoryTest" end time: Dec 09 05:55 +03
+"MemoryTest" time elapsed: 00:00:08
+----------------------------------------------------------
+
+11/13 Testing: PerformanceMetricsTest
+11/13 Test: PerformanceMetricsTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/performance_metrics_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"PerformanceMetricsTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Performance metrics tests starting...
+
+1. Throughput Test
+Size: 16 bytes, Time: 1 microseconds
+Size: 32 bytes, Time: 0 microseconds
+Size: 64 bytes, Time: 0 microseconds
+
+2. Latency Test
+Average latency: 0 microseconds
+
+3. Scalability Test
+Size: 16 bytes, Time: 0 microseconds
+Size: 32 bytes, Time: 0 microseconds
+Size: 64 bytes, Time: 0 microseconds
+
+4. Resource Usage Test
+Size: 1024 bytes
+Memory usage: 0 bytes
+Size: 2048 bytes
+Memory usage: 0 bytes
+Size: 4096 bytes
+Memory usage: 0 bytes
+
+5. Performance Report
+Test size: 64 bytes
+Processing time: 0 microseconds
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"PerformanceMetricsTest" end time: Dec 09 05:55 +03
+"PerformanceMetricsTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/13 Testing: SecurityBenchmarkTest
+12/13 Test: SecurityBenchmarkTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/security_benchmark"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"SecurityBenchmarkTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Security tests starting...
+
+1. Standard Attack Resistance Test
+Entropy Level: 1
+Attack Probability: 0.00117994
+
+Entropy Level: 1
+Attack Probability: 0.00117994
+
+Entropy Level: 0.971709
+Attack Probability: 0.00878229
+
+2. Quantum Resistance Test
+Using standard mode (Quantum mode requires commercial license)
+Standard mode hash size: 32 bytes
+3. Collision Resistance Test
+Collision found! Test #1
+4. Entropy Level Test
+Low Entropy:
+Entropy Level: 0
+Pattern Complexity: 0
+
+Medium Entropy:
+Entropy Level: 0.5
+Pattern Complexity: 0.93707
+
+High Entropy:
+Entropy Level: 0.978862
+Pattern Complexity: 0.999017
+
+5. Adaptive Security Test
+Iteration 0:
+Threat Level: 0
+Iteration 1:
+Threat Level: 0
+Iteration 2:
+Threat Level: 0
+Iteration 3:
+Threat Level: 0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SecurityBenchmarkTest" end time: Dec 09 05:55 +03
+"SecurityBenchmarkTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/13 Testing: ReadmeTest
+13/13 Test: ReadmeTest
+Command: "/home/nzengi/Desktop/skein3-AI/build/readme_test"
+Directory: /home/nzengi/Desktop/skein3-AI/build
+"ReadmeTest" start time: Dec 09 05:55 +03
+Output:
+----------------------------------------------------------
+Hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Streaming Hash: 01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+AI-Optimized Hash: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ReadmeTest" end time: Dec 09 05:55 +03
+"ReadmeTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 09 05:55 +03

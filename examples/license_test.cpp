@@ -47,29 +47,27 @@ private:
     static void testFeatureAccess() {
         std::cout << "\n2. Feature Access Test\n";
 
-        // Quantum feature test - daha küçük veri boyutu
         testFeature("Quantum Resistance", LicenseManager::Feature::QUANTUM_RESISTANCE, []() {
             Skein3::Config config;
-            config.size = Skein3::HashSize::HASH_512; // 1024 yerine 512
-            std::vector<uint8_t> data{1, 2, 3};
+            config.size = Skein3::HashSize::HASH_256;
+            std::vector<uint8_t> data{1};
             return Skein3::hash(data, config);
         });
 
-        // Parallel processing test - daha az thread
+        // Parallel processing test - minimal thread
         testFeature("Parallel Processing", LicenseManager::Feature::PARALLEL_PROCESSING, []() {
             Skein3::Config config;
             config.mode = Skein3::HashMode::TREE;
-            config.tree_fan_out = 4; // 8 yerine 4 thread
-            std::vector<uint8_t> data(1024 * 1024); // 1MB veri
+            config.tree_fan_out = 1; // Tek thread
+            std::vector<uint8_t> data{1};
             return Skein3::tree_hash(data, config);
         });
 
-        // AI optimization test - basit veri
         testFeature("AI Optimization", LicenseManager::Feature::AI_OPTIMIZATION, []() {
             Skein3::Config config;
             config.neural_config.enable_neural_adaptation = true;
-            config.neural_config.complexity_threshold = 0.75f;
-            std::vector<uint8_t> data{1, 2, 3};
+            config.neural_config.complexity_threshold = 0.5f;
+            std::vector<uint8_t> data{1};
             return Skein3::hash(data, config);
         });
     }

@@ -9,10 +9,8 @@ void testSecurity() {
         std::string test_data = "Security test data";
         std::vector<uint8_t> data(test_data.begin(), test_data.end());
 
-        // Güvenlik analizi
         Skein3::Config config;
         
-        // Exception handling ekle
         try {
             auto hash = Skein3::hash(data, config);
             auto metrics = SecurityMonitor::analyzeHashOperation(data, hash);
@@ -24,7 +22,6 @@ void testSecurity() {
             std::cout << "Attack probability: " << metrics.attack_probability << "\n";
             std::cout << "Threat level: " << static_cast<int>(threat_level) << "\n";
             
-            // Bellek bütünlüğü kontrolü
             if (!Skein3::verifyMemoryIntegrity(hash.data(), hash.size(), config)) {
                 throw std::runtime_error("Memory integrity check failed");
             }

@@ -100,7 +100,7 @@ private:
 
     template<typename T>
     static bool verifyQuantumFingerprint(const T* memory, size_t size) {
-        return true; // Basit implementasyon
+        return true;
     }
 };
 

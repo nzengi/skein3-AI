@@ -110,7 +110,6 @@ private:
             Skein3::Config config;
             auto hash = Skein3::hash(file_data, config);
 
-            // Dosyayı temizle
             std::remove(filename.c_str());
 
             return !hash.empty();
@@ -131,7 +130,6 @@ private:
             Skein3::Config config;
             Skein3::StreamingHasher hasher(config);
 
-            // Stream'den parça parça oku ve işle
             char buffer[256];
             while (stream.read(buffer, sizeof(buffer))) {
                 std::vector<uint8_t> chunk(buffer, buffer + stream.gcount());

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <numeric>
 
-// Statik üyelerin tanımı
 std::vector<unsigned long> PerformanceMetrics::operation_sizes;
 std::vector<std::chrono::microseconds> PerformanceMetrics::operation_durations;
 

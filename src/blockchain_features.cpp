@@ -7,7 +7,6 @@ std::vector<uint8_t> BlockchainFeatures::generateZKProof(
     const std::vector<uint8_t>& data,
     const std::vector<uint8_t>& proof_params
 ) {
-    // ZK proof oluşturma mantığı
     Skein3::Config config;
     config.size = Skein3::HashSize::HASH_1024;
     config.zero_knowledge = true;
@@ -27,7 +26,6 @@ std::vector<uint8_t> BlockchainFeatures::optimizedMerkleRoot(
         throw std::invalid_argument("Empty transaction list");
     }
 
-    // Merkle ağacı oluşturma
     std::vector<std::vector<uint8_t>> current_level = transactions;
     Skein3::Config config;
     config.size = Skein3::HashSize::HASH_512;
@@ -65,7 +63,6 @@ bool BlockchainFeatures::verifySmartContract(
     const std::vector<uint8_t>& contract_code,
     const std::vector<uint8_t>& execution_params
 ) {
-    // Akıllı kontrat doğrulama mantığı
     Skein3::Config config;
     config.size = Skein3::HashSize::HASH_512;
     config.zero_knowledge = true;
@@ -77,6 +74,5 @@ bool BlockchainFeatures::verifySmartContract(
 
     auto hash = Skein3::hash(verification_data, config);
     
-    // Basit doğrulama kontrolü
     return !hash.empty() && hash[0] != 0;
 }

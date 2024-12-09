@@ -5,9 +5,7 @@
 #include <map>
 #include <deque>
 
-// SecurityMetricsImpl için depo sınıfı
 namespace {
-    // Geçmiş veriler için depo
     std::deque<float> entropy_history;
     std::deque<float> complexity_history;
     std::map<std::vector<uint8_t>, size_t> pattern_frequency;
@@ -22,7 +20,6 @@ SecurityMonitor::SecurityMetrics SecurityMonitor::analyzeHashOperation(
 ) {
     SecurityMetricsImpl metrics;
     
-    // Giriş entropisini hesapla
     std::array<size_t, 256> histogram{};
     for (uint8_t byte : input) {
         histogram[byte]++;
@@ -35,15 +32,13 @@ SecurityMonitor::SecurityMetrics SecurityMonitor::analyzeHashOperation(
             entropy -= p * std::log2(p);
         }
     }
-    metrics.entropy_level = entropy / 8.0f; // [0,1] aralığına normalize et
+    metrics.entropy_level = entropy / 8.0f;
     
-    // Entropi geçmişini güncelle
     entropy_history.push_back(metrics.entropy_level);
     if (entropy_history.size() > HISTORY_SIZE) {
         entropy_history.pop_front();
     }
     
-    // Desenleri analiz et
     pattern_frequency.clear();
     for (size_t i = 0; i <= input.size() - PATTERN_SIZE; ++i) {
         std::vector<uint8_t> pattern(
@@ -53,26 +48,21 @@ SecurityMonitor::SecurityMetrics SecurityMonitor::analyzeHashOperation(
         pattern_frequency[pattern]++;
     }
     
-    // Desen karmaşıklığını hesapla
     float max_freq = 0;
     for (const auto& [pattern, freq] : pattern_frequency) {
         max_freq = std::max(max_freq, static_cast<float>(freq));
     }
     metrics.pattern_complexity = 1.0f - (max_freq / (input.size() - PATTERN_SIZE + 1));
     
-    // Karmaşıklık geçmişini güncelle
     complexity_history.push_back(metrics.pattern_complexity);
     if (complexity_history.size() > HISTORY_SIZE) {
         complexity_history.pop_front();
     }
     
-    // Tehditleri tespit et
     detectThreats(metrics, input, output);
     
-    // Saldırı olasılığını hesapla
     metrics.attack_probability = calculateAttackProbability(metrics);
     
-    // Sonuçları public arayüze dönüştür
     SecurityMetrics result;
     result.entropy_level = metrics.entropy_level;
     result.pattern_complexity = metrics.pattern_complexity;
@@ -87,7 +77,6 @@ void SecurityMonitor::detectThreats(
     const std::vector<uint8_t>& input,
     const std::vector<uint8_t>& output
 ) {
-    // Entropi anomali tespiti
     if (!entropy_history.empty()) {
         float avg_entropy = std::accumulate(
             entropy_history.begin(),
@@ -107,7 +96,6 @@ void SecurityMonitor::detectThreats(
         }
     }
     
-    // Desen anomali tespiti
     if (!complexity_history.empty()) {
         float avg_complexity = std::accumulate(
             complexity_history.begin(),
@@ -131,18 +119,14 @@ void SecurityMonitor::detectThreats(
 float SecurityMonitor::calculateAttackProbability(const SecurityMetricsImpl& metrics) {
     float probability = 0.0f;
     
-    // Farklı faktörleri ağırlıklandır
     const float ENTROPY_WEIGHT = 0.3f;
     const float COMPLEXITY_WEIGHT = 0.3f;
     const float THREAT_WEIGHT = 0.4f;
     
-    // Entropi faktörü
     float entropy_factor = 1.0f - metrics.entropy_level;
     
-    // Karmaşıklık faktörü
     float complexity_factor = 1.0f - metrics.pattern_complexity;
     
-    // Tehdit faktörü
     float threat_factor = 0.0f;
     if (!metrics.threats.empty()) {
         float max_severity = 0.0f;
@@ -152,7 +136,6 @@ float SecurityMonitor::calculateAttackProbability(const SecurityMetricsImpl& met
         threat_factor = max_severity;
     }
     
-    // Faktörleri birleştir
     probability = ENTROPY_WEIGHT * entropy_factor +
                  COMPLEXITY_WEIGHT * complexity_factor +
                  THREAT_WEIGHT * threat_factor;

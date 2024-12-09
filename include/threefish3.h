@@ -33,26 +33,22 @@ public:
         ADAPTIVE
     };
 
-    // Constructor
     Threefish3(const std::array<uint64_t, NUM_WORDS>& state,
                const std::array<uint64_t, 3>& tweak,
                SecurityMode mode);
     
     ~Threefish3();
 
-    // Temel işlemler
     void encrypt(const std::array<uint64_t, NUM_WORDS>& plaintext,
                 std::array<uint64_t, NUM_WORDS>& ciphertext);
 
     void decrypt(const std::array<uint64_t, NUM_WORDS>& ciphertext,
                 std::array<uint64_t, NUM_WORDS>& plaintext);
 
-    // SIMD işlemleri
     void simd_mix_function(__m256i& block, int round);
     void simd_permute_words(std::array<__m256i, NUM_WORDS/4>& data);
     void simd_inverse_mix_function(__m256i& block, int round);
 
-    // Paralel işlemler
     void parallel_encrypt(const std::vector<uint8_t>& input,
                         std::vector<uint8_t>& output,
                         size_t num_threads);
@@ -60,7 +56,6 @@ public:
                         std::vector<uint8_t>& output,
                         size_t num_threads);
 
-    // Yardımcı fonksiyonlar
     void benchmark(size_t data_size);
     void generate_dynamic_tables();
     void set_operation_mode(OperationMode mode);

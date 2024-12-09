@@ -48,7 +48,6 @@ public:
         }
     };
 
-    // Analyze input data and adapt hash parameters
     static void adaptParameters(
         const std::vector<uint8_t>& input,
         Network& network,
@@ -67,7 +66,6 @@ public:
         }
     }
 
-    // Apply neural network adaptations to hash computation
     static std::vector<uint8_t> applyAdaptation(
         const std::vector<uint8_t>& input,
         const Network& network
@@ -78,10 +76,9 @@ public:
     }
 
 private:
-    // Feature extraction from input data
     static std::vector<float> extractFeatures(const std::vector<uint8_t>& input) {
         std::vector<float> features;
-        features.reserve(64); // Fixed feature size
+        features.reserve(64);
         
         // Statistical features
         float mean = 0.0f, variance = 0.0f;
@@ -126,8 +123,7 @@ private:
         
         return features;
     }
-
-    // Forward pass through neural network
+    
     static std::vector<float> forward(
         const std::vector<float>& input,
         const Network& network

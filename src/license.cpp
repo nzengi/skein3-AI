@@ -40,12 +40,10 @@ void LicenseManager::setLicense(const std::string& license_key) {
 }
 
 bool LicenseManager::verifySignature(const std::string& license_key) {
-    // Basit bir doğrulama örneği
-    return license_key.length() >= 32;  // En az 32 karakter olmalı
+    return license_key.length() >= 32;
 }
 
 void LicenseManager::decodeLicenseKey(const std::string& license_key) {
-    // Lisans anahtarını decode et
     current_license_.key = license_key;
     current_license_.type = LicenseType::BASIC_COMMERCIAL;
     current_license_.organization = "Example Org";
@@ -57,5 +55,3 @@ const LicenseManager::License& LicenseManager::getCurrentLicense() const {
     std::lock_guard<std::mutex> lock(license_mutex_);
     return current_license_;
 }
-
-// Diğer private fonksiyonlar... 
