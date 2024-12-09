@@ -145,10 +145,10 @@ auto hash = Skein3::hash(data, config);
 - Enterprise License
 - AI/Blockchain Specific Licenses
 
-Contact sales@skein3.com for licensing information.
+Contact nzengi for licensing information.
 
 ### Security Reporting
-For security vulnerabilities, please email security@skein3.com
+For security vulnerabilities, please via TG.
 
 ## Contributing
 
