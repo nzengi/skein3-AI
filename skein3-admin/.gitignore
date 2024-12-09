@@ -1,8 +1,0 @@
-# Build files
-build/
-*.o
-*.a
-
-# License files
-*.license
-license_keys.txt 
