@@ -8,108 +8,46 @@
 
 Skein3 is an advanced, enterprise-grade cryptographic hash function designed for high-security applications. It offers quantum resistance, adaptive security, and advanced optimization features for AI, blockchain, and high-performance computing environments.
 
-## Key Features
+## Test Results and Analysis
 
-### 🔒 Security
-- Quantum-resistant hash algorithm
-- Adaptive security levels
-- Advanced memory protection
-- Side-channel attack mitigation
+### 1. Basic Hash Function Test
 
-### ⚡ Performance
-- SIMD and multi-threading optimizations
-- GPU acceleration support
-- Configurable hash sizes (256, 512, 1024 bits)
-- Low-overhead design
+Comprehensive testing across different hash sizes demonstrated consistent and unique hash generation:
 
-### 🧠 AI & Blockchain Integration
-- Neural network-based hash adaptation
-- Merkle tree optimization
-- Zero-knowledge proof support
-- Blockchain-specific hash modes
+#### 256-bit Hash Results
+- String data: `19cbebce6797284ec1e4dcc9e5a05b7f9502c828c776dd7e8a14ee248354ffe6`
+- Binary data: `b15185b137394f0eb54404a6e03582f49502c828c776dd7e8a14ee248354ffe6`
+- Random data: `8427a1631736eec91db8053db594226444e0e982658013f1cec92537b28dec4e`
 
-## Installation
+#### 512-bit Hash Results
+- String data: `060292fe7af1d7c871935f4be72d6ec2...62227de86cdaabd2`
+- Binary data: `5e92df459b4521f5df07bda892c753ff...62227de86cdaabd2`
+- Random data: `81b5756ea04d5dc46b18e8d83100786c...ac4f2156`
 
-### Prerequisites
-- C++17 compatible compiler
-- CMake 3.10+
-- OpenSSL (optional)
+#### 1024-bit Hash Results (Quantum-Resistant Mode)
+- String data: `0272aeeecab521e7acb82d8fe9739a87...df1275c`
+- Binary data: `83ee44a5783c63b81203f9abfd448325...df1275c`
+- Random data: `5e53284976f9e94ead6f34c679366ebc...38a67d`
 
-### Build from Source
-```bash
-git clone https://github.com/nzengi/skein3.git
-cd skein3
-mkdir build && cd build
-cmake ..
-make
-```
+### 2. Performance Benchmarks
 
-## Basic Usage
+Tests conducted on AMD processor with NVIDIA 3060 GPU and 16GB RAM:
 
-### Standard Hashing
-```cpp
-#include <skein3.h>
-
-std::vector<uint8_t> message = {1, 2, 3, 4, 5};
-Skein3::Config config;
-config.size = Skein3::HashSize::HASH_512;
-
-auto hash = Skein3::hash(message, config);
-```
-
-### Streaming Hash
-```cpp
-Skein3::StreamingHasher hasher;
-hasher.update(chunk1);
-hasher.update(chunk2);
-auto final_hash = hasher.finalize();
-```
-
-### AI-Optimized Hashing
-```cpp
-Skein3::Config config;
-config.neural_config.enable_neural_adaptation = true;
-config.neural_config.complexity_threshold = 0.85f;
-
-auto hash = Skein3::hash(message, config);
-```
-
-## Licensing
-
-Skein3 is a commercial product with different licensing tiers:
-- Basic Commercial License
-- Enterprise License
-- AI/Blockchain Specific Licenses
-
-Contact sales@skein3.com for licensing information.
-
-## Performance Benchmarks
-
-The algorithm was tested on an AMD processor with NVIDIA 3060 GPU and 16GB RAM:
-
-#### Data Size Performance
+#### Single-Thread Performance
 | Data Size | Processing Time | Throughput    |
 |-----------|----------------|---------------|
 | 1 KB      | 2 µs          | 512 MB/s      |
 | 1 MB      | 1.453 ms      | 721.66 MB/s   |
 | 10 MB     | 14.849 ms     | 706.16 MB/s   |
 
-#### Overall Performance
+#### Overall Single-Thread Metrics
 - Total data processed: 11 MB
 - Total processing time: 16.30 ms
 - Average throughput: 707.52 MB/s
 
-These results demonstrate excellent performance characteristics:
-- Consistent high throughput across different data sizes
-- Efficient processing of both small and large data sets
-- Minimal performance degradation with increasing data size
-- Effective utilization of AVX2 instructions and SIMD optimizations
+### 3. Parallel Processing Performance
 
-## Test Results and Performance Analysis
-
-### Parallel Processing Performance
-
-Tests were conducted on AMD processor with 16 available threads:
+Multi-threaded performance analysis with varying data sizes:
 
 #### 1MB Data Size
 | Threads | Time (µs) | Throughput (MB/s) | Scaling Factor |
@@ -135,107 +73,91 @@ Tests were conducted on AMD processor with 16 available threads:
 | 4       | 38,079    | 1,313.06         | 2.91x          |
 | 8       | 32,215    | 1,552.07         | 3.44x          |
 
-#### Key Observations:
-1. **Excellent Scaling**: Near-linear scaling up to 4 threads
-2. **Peak Performance**: 1,552.07 MB/s with 8 threads on 50MB data
-3. **Efficiency Patterns**:
-   - Better scaling with larger data sizes
-   - Optimal performance at 4-8 threads
-   - Diminishing returns after 8 threads
+### 4. Technical Features
 
-#### Performance Characteristics:
-- **Small Data (1MB)**: Best for quick operations, shows good parallelization
-- **Medium Data (10MB)**: Optimal balance of throughput and scaling
-- **Large Data (50MB)**: Highest absolute throughput, best parallel efficiency
+#### Security Features
+- 🔒 Quantum-resistant hash algorithm
+- 🛡️ Adaptive security levels
+- 🔐 Advanced memory protection
+- 🚫 Side-channel attack mitigation
 
-The implementation shows excellent parallel processing capabilities, with significant performance improvements through multi-threading. The scaling efficiency demonstrates the effectiveness of the tree-hash architecture and thread management system.
+#### Performance Optimizations
+- ⚡ SIMD and AVX2 optimizations
+- 🔄 Multi-threading support
+- 🎮 GPU acceleration capability
+- 📊 Configurable hash sizes (256, 512, 1024 bits)
 
-### Basic Hash Function Test
+#### AI & Blockchain Features
+- 🧠 Neural network-based hash adaptation
+- 🌳 Merkle tree optimization
+- 🔍 Zero-knowledge proof support
+- ⛓️ Blockchain-specific modes
 
-Skein3 was tested for three different hash sizes (256-bit, 512-bit, and 1024-bit) and produced the following results:
+## Installation
 
-#### 256-bit Hash Results
-- For string data: `19cbebce6797284ec1e4dcc9e5a05b7f9502c828c776dd7e8a14ee248354ffe6`
-- For binary data: `b15185b137394f0eb54404a6e03582f49502c828c776dd7e8a14ee248354ffe6`
-- For random data: `8427a1631736eec91db8053db594226444e0e982658013f1cec92537b28dec4e`
+### Prerequisites
+- C++17 compatible compiler
+- CMake 3.10+
+- OpenSSL (optional)
 
-#### 512-bit Hash Results
-- For string data: `060292fe7af1d7c871935f4be72d6ec2...62227de86cdaabd2`
-- For binary data: `5e92df459b4521f5df07bda892c753ff...62227de86cdaabd2`
-- For random data: `81b5756ea04d5dc46b18e8d83100786c...ac4f2156`
+### Build Instructions
+```bash
+git clone https://github.com/nzengi/skein3-AI.git
+cd skein3
+mkdir build && cd build
+cmake ..
+make
+```
 
-#### 1024-bit Hash Results
-- For string data: `0272aeeecab521e7acb82d8fe9739a87...df1275c`
-- For binary data: `83ee44a5783c63b81203f9abfd448325...df1275c`
-- For random data: `5e53284976f9e94ead6f34c679366ebc...38a67d`
+## Usage Examples
 
-### Key Features and Innovations
+### Basic Hashing
+```cpp
+#include <skein3.h>
 
-1. **Multiple Hash Size Support**
-   - 256-bit: Standard security level
-   - 512-bit: Enhanced security level
-   - 1024-bit: Quantum-resistant security level
+std::vector<uint8_t> message = {1, 2, 3, 4, 5};
+Skein3::Config config;
+config.size = Skein3::HashSize::HASH_512;
 
-2. **Deterministic Behavior**
-   - Produces consistent hash values for identical inputs
-   - Generates unique and consistent hash values for different data types
+auto hash = Skein3::hash(message, config);
+```
 
-3. **Data Type Independence**
-   - Optimized processing for:
-     - String data
-     - Binary data
-     - Random data
+### Parallel Processing
+```cpp
+Skein3::Config config;
+config.mode = Skein3::HashMode::TREE;
+config.tree_fan_out = 8;  // Use 8 threads
+auto hash = Skein3::tree_hash(large_data, config);
+```
 
-4. **Security Features**
-   - Collision resistance: Different inputs produce different hash values
-   - Quantum computer attack resistance (in 1024-bit mode)
-   - Advanced bit distribution and entropy
+### AI-Optimized Mode
+```cpp
+Skein3::Config config;
+config.neural_config.enable_neural_adaptation = true;
+config.neural_config.complexity_threshold = 0.85f;
+auto hash = Skein3::hash(data, config);
+```
 
-5. **Performance Optimizations**
-   - SIMD optimizations
-   - AVX2 support
-   - Parallel processing capabilities
+## License and Support
 
-### Use Cases
+### Commercial Licensing
+- Basic Commercial License
+- Enterprise License
+- AI/Blockchain Specific Licenses
 
-- Blockchain applications
-- Cryptographic verification systems
-- Data integrity checking
-- Secure storage systems
-- Quantum-safe applications
+Contact sales@skein3.com for licensing information.
 
-These test results demonstrate that Skein3 is a reliable and consistent hash algorithm suitable for various use cases. Its ability to produce consistent results across different data types and sizes proves its reliability in practical applications.
-
-### Technical Highlights
-
-- **SIMD Integration**: Utilizes Advanced Vector Extensions 2 (AVX2) for enhanced performance
-- **Memory Safety**: Implements secure memory management and protection
-- **Quantum Resistance**: Provides enhanced security features for post-quantum cryptography
-- **Scalability**: Supports various hash sizes without compromising performance
-- **Thread Safety**: Ensures safe concurrent operations in multi-threaded environments
-
-### Performance Metrics
-
-- Consistent hash generation across multiple runs
-- Efficient handling of different input sizes
-- Optimized memory usage
-- Fast processing speed with SIMD operations
-
-The implementation demonstrates robust security features while maintaining high performance, making it suitable for both standard cryptographic applications and future quantum-resistant requirements.
+### Security Reporting
+For security vulnerabilities, please email security@skein3.com
 
 ## Contributing
 
 We welcome contributions! Please see `CONTRIBUTING.md` for guidelines.
 
-## Security Reporting
+## Documentation
 
-For security vulnerabilities, please email security@skein3.com.
-
-## License
-
-Commercial License. See `LICENSE` for details.
-
-## Research & Development
-
-Skein3 is developed by nzengi, with ongoing research in post-quantum cryptography and advanced hash function design.
-
+For detailed documentation, please visit:
+- [API Reference](docs/api-reference.md)
+- [Security Features](docs/security-features.md)
+- [Performance Guide](docs/performance.md)
+- [Enterprise Usage](docs/enterprise.md)
