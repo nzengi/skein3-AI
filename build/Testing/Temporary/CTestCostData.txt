@@ -1,0 +1,20 @@
+BasicTest 4 0.000672565
+PerformanceTest 4 0.00842815
+ParallelTest 0 0
+SecurityTest 4 0.00198378
+ComprehensiveTest 0 0
+CustomizationTest 4 0.00284935
+ErrorHandlingTest 0 0
+IntegrationTest 4 0.000665444
+LicenseTest 0 0
+MemoryTest 4 2.01616
+PerformanceMetricsTest 0 0
+SecurityBenchmarkTest 0 0
+ReadmeTest 4 0.000581342
+---
+ParallelTest
+ComprehensiveTest
+ErrorHandlingTest
+LicenseTest
+PerformanceMetricsTest
+SecurityBenchmarkTest

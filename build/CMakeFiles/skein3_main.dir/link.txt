@@ -1,0 +1,1 @@
+/usr/bin/c++  -mavx2 -msse4.2 -O3 -Wall -Wextra -Wpedantic -fstack-protector-strong -flto CMakeFiles/skein3_main.dir/main.cpp.o -o skein3_main  libskein3_lib.a /usr/lib/x86_64-linux-gnu/libssl.so /usr/lib/x86_64-linux-gnu/libcrypto.so
