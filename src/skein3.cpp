@@ -297,84 +297,86 @@ std::vector<uint8_t> Skein3::mac(const std::vector<uint8_t>& message,
 }
 
 // Tree hash implementation
-std::vector<uint8_t> Skein3::tree_hash(const std::vector<uint8_t>& message,
-                                      const Config& config) {
-    // Determine security mode
-    Threefish3::SecurityMode sec_mode;
-    switch (config.size) {
-        case HashSize::HASH_1024:
-            sec_mode = Threefish3::SecurityMode::QUANTUM;
-            break;
-        case HashSize::HASH_512:
-            sec_mode = Threefish3::SecurityMode::ENHANCED;
-            break;
-        default:
-            sec_mode = Threefish3::SecurityMode::STANDARD;
+std::vector<uint8_t> Skein3::tree_hash(
+    const std::vector<uint8_t>& message,
+    const Config& config
+) {
+    // Güvenlik kontrolü
+    if (message.empty()) {
+        throw std::invalid_argument("Empty message");
     }
 
-    // Calculate number of leaf nodes
-    const size_t leaf_size = config.tree_leaf_size;
-    const size_t num_leaves = (message.size() + leaf_size - 1) / leaf_size;
+    // Leaf boyutu kontrolü
+    const size_t leaf_size = std::max(size_t(1024), config.tree_leaf_size);
     
-    // Process leaf nodes in parallel
-    std::vector<std::vector<uint8_t>> leaf_hashes(num_leaves);
+    // Thread sayısı kontrolü
+    const size_t num_threads = std::min(
+        config.tree_fan_out,
+        (message.size() + leaf_size - 1) / leaf_size
+    );
+
+    // Leaf hash'lerini hesapla
+    std::vector<std::vector<uint8_t>> leaf_hashes(num_threads);
     std::vector<std::thread> threads;
-    
-    for (size_t i = 0; i < num_leaves; ++i) {
+
+    const size_t chunk_size = (message.size() + num_threads - 1) / num_threads;
+
+    for (size_t i = 0; i < num_threads; ++i) {
         threads.emplace_back([&, i]() {
-            size_t offset = i * leaf_size;
-            size_t size = std::min(leaf_size, message.size() - offset);
+            size_t start = i * chunk_size;
+            size_t end = std::min(start + chunk_size, message.size());
             
-            // Create leaf context
-            BlockContext leaf_ctx;
-            leaf_ctx.domain = DOMAIN_TREE;
-            leaf_ctx.state.fill(0);
+            if (start >= message.size()) return;
+
+            // Her leaf için normal hash hesapla
+            std::vector<uint8_t> chunk(
+                message.begin() + start,
+                message.begin() + end
+            );
+
+            Config leaf_config = config;
+            leaf_config.mode = HashMode::STANDARD;  // Leaf'ler için standard mod
             
-            // Process leaf data
-            process_block(leaf_ctx,
-                        message.data() + offset,
-                        size,
-                        sec_mode);
-            
-            // Store leaf hash
-            leaf_hashes[i].resize(Threefish3::BLOCK_SIZE);
-            std::memcpy(leaf_hashes[i].data(),
-                       leaf_ctx.state.data(),
-                       Threefish3::BLOCK_SIZE);
+            leaf_hashes[i] = hash(chunk, leaf_config);
         });
     }
-    
-    // Wait for leaf processing to complete
+
+    // Thread'lerin tamamlanmasını bekle
     for (auto& thread : threads) {
         thread.join();
     }
-    
-    // Build tree levels
-    while (leaf_hashes.size() > 1) {
-        size_t num_nodes = (leaf_hashes.size() + config.tree_fan_out - 1) / config.tree_fan_out;
-        std::vector<std::vector<uint8_t>> next_level(num_nodes);
-        
-        for (size_t i = 0; i < num_nodes; ++i) {
-            size_t start = i * config.tree_fan_out;
-            size_t end = std::min(start + config.tree_fan_out, leaf_hashes.size());
-            
-            std::vector<std::vector<uint8_t>> children(
-                leaf_hashes.begin() + start,
-                leaf_hashes.begin() + end
-            );
-            
-            next_level[i] = process_tree_node(children, config, leaf_hashes.size() <= config.tree_fan_out);
-        }
-        
-        leaf_hashes = std::move(next_level);
+
+    // Tek leaf varsa direkt döndür
+    if (leaf_hashes.size() == 1) {
+        return leaf_hashes[0];
     }
-    
-    // Return root hash
-    size_t hash_size = static_cast<size_t>(config.size) / 8;
-    std::vector<uint8_t> result(hash_size);
-    std::memcpy(result.data(), leaf_hashes[0].data(), hash_size);
-    
-    return result;
+
+    // Merkle ağacını oluştur
+    while (leaf_hashes.size() > 1) {
+        size_t num_parents = (leaf_hashes.size() + 1) / 2;
+        std::vector<std::vector<uint8_t>> parent_hashes(num_parents);
+
+        for (size_t i = 0; i < num_parents; ++i) {
+            std::vector<uint8_t> combined;
+            combined.insert(combined.end(), 
+                          leaf_hashes[i * 2].begin(), 
+                          leaf_hashes[i * 2].end());
+
+            if (i * 2 + 1 < leaf_hashes.size()) {
+                combined.insert(combined.end(),
+                              leaf_hashes[i * 2 + 1].begin(),
+                              leaf_hashes[i * 2 + 1].end());
+            }
+
+            Config parent_config = config;
+            parent_config.mode = HashMode::STANDARD;
+            parent_hashes[i] = hash(combined, parent_config);
+        }
+
+        leaf_hashes = std::move(parent_hashes);
+    }
+
+    return leaf_hashes[0];
 }
 
 // Helper function for tree hash
