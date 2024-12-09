@@ -4,6 +4,7 @@
 #include <chrono>
 #include <vector>
 #include <fstream>
+#include <algorithm>  // std::generate için
 
 struct BenchmarkResult {
     size_t data_size;

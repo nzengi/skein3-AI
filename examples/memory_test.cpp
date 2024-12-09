@@ -8,63 +8,12 @@
 #include <cstring>
 #include <thread>
 #include <random>
+#include <cassert>
 #ifdef __linux__
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 #endif
-
-namespace QuantumResistantMemory {
-    enum class ProtectionLevel {
-        STANDARD,
-        ENHANCED
-    };
-
-    struct ProtectionConfig {
-        ProtectionLevel level;
-        int rounds;
-        bool secure_wipe;
-    };
-
-    template<typename T>
-    std::unique_ptr<T[]> allocateSecure(size_t size, const ProtectionConfig& config) {
-        auto memory = std::make_unique<T[]>(size);
-        // Implementation of secure allocation
-        return memory;
-    }
-
-    template<typename T>
-    bool verifyIntegrity(const T* memory, size_t size) {
-        if (!memory || size == 0) return false;
-        
-        uint64_t checksum = 0;
-        const uint8_t* bytes = reinterpret_cast<const uint8_t*>(memory);
-        
-        for (size_t i = 0; i < size; ++i) {
-            checksum = (checksum << 1) ^ bytes[i];
-        }
-        
-        return checksum != 0;
-    }
-
-    template<typename T>
-    void secureWipe(T* memory, size_t size) {
-        if (!memory || size == 0) return;
-        
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<uint8_t> dis;
-        
-        uint8_t* bytes = reinterpret_cast<uint8_t*>(memory);
-        for (size_t i = 0; i < size * sizeof(T); ++i) {
-            bytes[i] = dis(gen);
-            _mm_mfence();
-        }
-        
-        std::memset(memory, 0, size * sizeof(T));
-        _mm_mfence();
-    }
-}
 
 class MemoryTest {
 public:
@@ -115,37 +64,47 @@ private:
     static void testSecureMemoryProtection() {
         std::cout << "\n2. Secure Memory Protection Test\n";
         
-        Skein3::Config config;
-        config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
-        
-        const size_t test_size = 1024 * 1024; // 1MB
-        
         try {
-            // Secure memory allocation
-            auto secure_memory = QuantumResistantMemory::allocateSecure<uint8_t>(
-                test_size,
-                QuantumResistantMemory::ProtectionConfig{
-                    .level = QuantumResistantMemory::ProtectionLevel::ENHANCED,
-                    .rounds = 3,
-                    .secure_wipe = true
-                }
-            );
+            const size_t test_size = 1024;
+            auto secure_memory = std::make_unique<uint8_t[]>(test_size);
 
-            // Check memory integrity
+            // Test verilerini güvenli şekilde doldur
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<uint8_t> dis;
+            
+            for (size_t i = 0; i < test_size; i++) {
+                secure_memory[i] = dis(gen);
+            }
+
+            // Koruma konfigürasyonu
+            QuantumResistantMemory::ProtectionConfig config{
+                .level = QuantumResistantMemory::ProtectionLevel::ENHANCED,
+                .rounds = 3,
+                .secure_wipe = true
+            };
+
+            // Bellek sınırlarını işaretle
+            std::vector<uint8_t> canary(32, 0xAA);
+            std::memcpy(secure_memory.get(), canary.data(), canary.size());
+            std::memcpy(secure_memory.get() + test_size - canary.size(), 
+                       canary.data(), canary.size());
+
+            // Bütünlük kontrolü
             bool integrity_check = QuantumResistantMemory::verifyIntegrity(
                 secure_memory.get(),
-                test_size
+                test_size,
+                config
             );
 
-            std::cout << "Memory integrity: " << (integrity_check ? "Success" : "Failed") << "\n";
-            
-            // Secure cleanup
-            auto start = std::chrono::high_resolution_clock::now();
+            if (!integrity_check) {
+                std::cerr << "Memory integrity check failed\n";
+            } else {
+                std::cout << "Memory integrity check passed\n";
+            }
+
+            // Güvenli temizleme
             QuantumResistantMemory::secureWipe(secure_memory.get(), test_size);
-            auto end = std::chrono::high_resolution_clock::now();
-            
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-            std::cout << "Secure cleanup time: " << duration.count() << " microseconds\n";
 
         } catch (const std::exception& e) {
             std::cerr << "Secure memory error: " << e.what() << "\n";

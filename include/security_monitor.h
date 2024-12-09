@@ -3,6 +3,32 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
+#include <chrono>
+
+// ThreatIndicator yapısını tanımlayalım
+struct ThreatIndicator {
+    enum class Type {
+        PATTERN_ANOMALY,
+        ENTROPY_DROP,
+        TIMING_ANOMALY,
+        COLLISION_ATTEMPT,
+        STRUCTURE_VIOLATION
+    };
+
+    Type type;
+    float severity;
+    std::string description;
+    uint64_t timestamp;
+};
+
+// SecurityMetricsImpl yapısını tanımlayalım
+struct SecurityMetricsImpl {
+    float entropy_level;
+    float pattern_complexity;
+    float attack_probability;
+    std::vector<ThreatIndicator> threats;
+};
 
 class SecurityMonitor {
 public:
@@ -30,4 +56,4 @@ protected:
     );
 };
 
-#endif // SECURITY_MONITOR_H 
+#endif // SECURITY_MONITOR_H

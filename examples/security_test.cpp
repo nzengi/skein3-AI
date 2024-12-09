@@ -5,21 +5,39 @@
 #include <string> 
 
 void testSecurity() {
-    std::string test_data = "Security test data";
-    std::vector<uint8_t> data(test_data.begin(), test_data.end());
+    try {
+        std::string test_data = "Security test data";
+        std::vector<uint8_t> data(test_data.begin(), test_data.end());
 
-    // Security analysis
-    Skein3::Config config;
-    auto hash = Skein3::hash(data, config);
-    
-    auto metrics = SecurityMonitor::analyzeHashOperation(data, hash);
-    auto threat_level = AdaptiveSecurity::analyzeThreatLevel(data, metrics);
+        // Güvenlik analizi
+        Skein3::Config config;
+        
+        // Exception handling ekle
+        try {
+            auto hash = Skein3::hash(data, config);
+            auto metrics = SecurityMonitor::analyzeHashOperation(data, hash);
+            auto threat_level = AdaptiveSecurity::analyzeThreatLevel(data, metrics);
 
-    std::cout << "Entropy level: " << metrics.entropy_level << std::endl;
-    std::cout << "Pattern complexity: " << metrics.pattern_complexity << std::endl;
-    std::cout << "Attack probability: " << metrics.attack_probability << std::endl;
-    std::cout << "Threat level: " << static_cast<int>(threat_level) << std::endl;
-} 
+            std::cout << "Security Analysis Results:\n";
+            std::cout << "Entropy level: " << metrics.entropy_level << "\n";
+            std::cout << "Pattern complexity: " << metrics.pattern_complexity << "\n";
+            std::cout << "Attack probability: " << metrics.attack_probability << "\n";
+            std::cout << "Threat level: " << static_cast<int>(threat_level) << "\n";
+            
+            // Bellek bütünlüğü kontrolü
+            if (!Skein3::verifyMemoryIntegrity(hash.data(), hash.size(), config)) {
+                throw std::runtime_error("Memory integrity check failed");
+            }
+            
+        } catch (const LicenseException& e) {
+            std::cout << "License warning: " << e.what() << "\n";
+            std::cout << "Using standard security features\n";
+        }
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Security test error: " << e.what() << std::endl;
+    }
+}
 
 int main() {
     testSecurity();

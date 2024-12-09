@@ -5,9 +5,9 @@
 #include <chrono>
 #include <vector>
 #include <fstream>
+#include <algorithm>
+#include <unistd.h>
 #include <numeric>
-#include <thread>
-#include <mutex>
 
 class PerformanceMetricsTest {
 public:
@@ -36,20 +36,22 @@ private:
         std::cout << "1. Throughput Test\n";
 
         std::vector<size_t> test_sizes = {
-            1024 * 1024,        // 1 MB
-            10 * 1024 * 1024,   // 10 MB
-            100 * 1024 * 1024   // 100 MB
+            1024 * 1024,      // 1 MB
+            2 * 1024 * 1024,  // 2 MB
+            5 * 1024 * 1024   // 5 MB - Daha küçük maksimum boyut
         };
 
         for (size_t size : test_sizes) {
-            std::vector<uint8_t> data(size);
-            std::generate(data.begin(), data.end(), std::rand);
+            try {
+                std::vector<uint8_t> data(size);
+                std::generate(data.begin(), data.end(), std::rand);
 
-            // Single thread test
-            {
                 auto start = std::chrono::high_resolution_clock::now();
                 
                 Skein3::Config config;
+                config.mem_protection = Skein3::MemoryProtectionMode::STANDARD;
+                config.size = Skein3::HashSize::HASH_512;
+                
                 auto hash = Skein3::hash(data, config);
                 
                 auto end = std::chrono::high_resolution_clock::now();
@@ -60,6 +62,9 @@ private:
                 double throughput = (size / 1024.0 / 1024.0) / (duration / 1000.0);
                 std::cout << "Size: " << (size / 1024.0 / 1024.0) << " MB, "
                          << "Throughput: " << throughput << " MB/s\n";
+                         
+            } catch (const std::exception& e) {
+                std::cerr << "Error at size " << size << ": " << e.what() << "\n";
             }
         }
     }

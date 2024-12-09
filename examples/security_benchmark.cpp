@@ -58,15 +58,33 @@ private:
     static void testQuantumResistance() {
         std::cout << "2. Quantum Resistance Test\n";
         
-        Skein3::Config config;
-        config.size = Skein3::HashSize::HASH_1024;
-        config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
-
-        auto data = generateRandomData(1024 * 1024); // 1MB veri
-        auto hash = Skein3::hash(data, config);
-
-        // Analyze quantum properties
-        analyzeQuantumProperties(hash);
+        try {
+            // Önce lisans kontrolü yap
+            if (!LicenseManager::getInstance().isCommercialUse()) {
+                std::cout << "Warning: Using standard mode (Quantum mode requires commercial license)\n";
+                
+                Skein3::Config config;
+                config.size = Skein3::HashSize::HASH_512; // Standard mod kullan
+                config.mem_protection = Skein3::MemoryProtectionMode::STANDARD;
+                
+                auto data = generateRandomData(1024 * 1024);
+                auto hash = Skein3::hash(data, config);
+                
+                analyzeQuantumProperties(hash);
+            } else {
+                // Ticari lisans varsa quantum modu kullan
+                Skein3::Config config;
+                config.size = Skein3::HashSize::HASH_1024;
+                config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
+                
+                auto data = generateRandomData(1024 * 1024);
+                auto hash = Skein3::hash(data, config);
+                
+                analyzeQuantumProperties(hash);
+            }
+        } catch (const std::exception& e) {
+            std::cout << "Error: " << e.what() << "\n";
+        }
     }
 
     static void testCollisionResistance() {

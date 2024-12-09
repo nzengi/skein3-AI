@@ -6,6 +6,7 @@
 #include <array>
 #include <cstdint>
 #include <memory>
+#include <cstring>
 
 // Project includes
 #include "threefish3.h"
@@ -23,68 +24,85 @@
  */
 class Skein3 {
 public:
-    // Hash output size options
+    // Enums first
     enum class HashSize {
-        HASH_256 = 256,    // Standard security level
-        HASH_512 = 512,    // Enhanced security level
-        HASH_1024 = 1024   // Quantum-resistant security level
+        HASH_256 = 256,
+        HASH_512 = 512,
+        HASH_1024 = 1024
     };
 
-    // Hash operation modes
     enum class HashMode {
-        STANDARD,       // Basic sequential processing
-        TREE,          // Parallel tree-based processing
-        STREAMING      // Optimized for continuous data streams
+        STANDARD,
+        TREE,
+        STREAMING
     };
 
-    // Optimization modes
     enum class OptimizationMode {
-        AI_TRAINING,      // AI model training optimization
-        BLOCKCHAIN,       // Blockchain specific optimization
-        STANDARD         // Standard mode
+        AI_TRAINING,
+        BLOCKCHAIN,
+        STANDARD
     };
 
-    // Memory protection modes
     enum class MemoryProtectionMode {
         STANDARD,
         QUANTUM_RESISTANT,
         HARDWARE_BACKED
     };
 
-    // Neural network based hash adaptation
+    // Then structs
     struct NeuralConfig {
-        bool enable_neural_adaptation = false;
-        float complexity_threshold = 0.75f;
-        size_t adaptation_rounds = 1000;
+        bool enable_neural_adaptation;
+        float complexity_threshold;
+        size_t adaptation_rounds;
         std::vector<float> weights;
+
+        NeuralConfig() 
+            : enable_neural_adaptation(false)
+            , complexity_threshold(0.75f)
+            , adaptation_rounds(1000)
+        {}
     };
 
-    // Configuration options
     struct Config {
-        HashSize size = HashSize::HASH_512;
-        HashMode mode = HashMode::STANDARD;
-        OptimizationMode opt_mode = OptimizationMode::STANDARD;
-        size_t tree_leaf_size = 1024;  // Size of leaf nodes in tree mode
-        size_t tree_fan_out = 8;       // Number of child nodes per parent
-        bool personalization = false;   // Enable personalization string
-        std::vector<uint8_t> person_string; // Custom personalization data
+        HashSize size;
+        HashMode mode;
+        OptimizationMode opt_mode;
+        size_t tree_leaf_size;
+        size_t tree_fan_out;
+        bool personalization;
+        std::vector<uint8_t> person_string;
         
-        // AI features
-        bool batch_processing = false;    // Batch hash processing for AI
-        size_t batch_size = 1024;        // Size of batches
-        bool gpu_acceleration = false;    // GPU acceleration support
+        bool batch_processing;
+        size_t batch_size;
+        bool gpu_acceleration;
         
-        // Blockchain features
-        bool merkle_tree = false;        // Merkle tree support
-        bool zero_knowledge = false;     // Zero-knowledge proof support
-        size_t nonce_space = 32;        // Nonce space for mining
+        bool merkle_tree;
+        bool zero_knowledge;
+        size_t nonce_space;
         
-        // Memory protection features
-        MemoryProtectionMode mem_protection = MemoryProtectionMode::STANDARD;
-        bool secure_memory_wipe = true;
-        size_t memory_protection_rounds = 3;
-
+        MemoryProtectionMode mem_protection;
+        bool secure_memory_wipe;
+        size_t memory_protection_rounds;
+        
         NeuralConfig neural_config;
+
+        Config()
+            : size(HashSize::HASH_512)
+            , mode(HashMode::STANDARD)
+            , opt_mode(OptimizationMode::STANDARD)
+            , tree_leaf_size(1024)
+            , tree_fan_out(8)
+            , personalization(false)
+            , batch_processing(false)
+            , batch_size(1024)
+            , gpu_acceleration(false)
+            , merkle_tree(false)
+            , zero_knowledge(false)
+            , nonce_space(32)
+            , mem_protection(MemoryProtectionMode::STANDARD)
+            , secure_memory_wipe(true)
+            , memory_protection_rounds(3)
+        {}
     };
 
     /**
@@ -93,74 +111,10 @@ public:
      * @param config Hash configuration options
      * @return Hash value as byte vector
      */
-    static std::vector<uint8_t> hash(const std::vector<uint8_t>& message,
-                                   const Config& config = Config()) {
-        checkLicense(config);
-        
-        // Determine security mode
-        Threefish3::SecurityMode sec_mode;
-        switch (config.size) {
-            case HashSize::HASH_1024:
-                sec_mode = Threefish3::SecurityMode::QUANTUM;
-                break;
-            case HashSize::HASH_512:
-                sec_mode = Threefish3::SecurityMode::ENHANCED;
-                break;
-            default:
-                sec_mode = Threefish3::SecurityMode::STANDARD;
-        }
-
-        // Initialize state
-        std::array<uint64_t, Threefish3::NUM_WORDS> state;
-        state.fill(0);
-        
-        // Process configuration block
-        process_config_block(state, config);
-        
-        // Process message blocks
-        BlockContext ctx;
-        ctx.state = state;
-        
-        const size_t block_size = Threefish3::BLOCK_SIZE;
-        size_t remaining = message.size();
-        size_t offset = 0;
-        
-        while (remaining > 0) {
-            size_t current_size = std::min(remaining, block_size);
-            bool is_last = (remaining <= block_size);
-            
-            if (is_last) {
-                ctx.is_final = true;
-            }
-            
-            process_block(ctx, 
-                         message.data() + offset, 
-                         current_size,
-                         sec_mode);
-            
-            offset += current_size;
-            remaining -= current_size;
-        }
-        
-        // Output transformation
-        BlockContext out_ctx;
-        out_ctx.state = ctx.state;
-        out_ctx.domain = DOMAIN_OUT;
-        out_ctx.is_final = true;
-        
-        std::array<uint64_t, Threefish3::NUM_WORDS> output_block = {};
-        process_block(out_ctx,
-                     reinterpret_cast<const uint8_t*>(output_block.data()),
-                     block_size,
-                     sec_mode);
-        
-        // Generate final hash
-        size_t hash_size = static_cast<size_t>(config.size) / 8;
-        std::vector<uint8_t> result(hash_size);
-        std::memcpy(result.data(), out_ctx.state.data(), hash_size);
-        
-        return result;
-    }
+    static std::vector<uint8_t> hash(
+        const std::vector<uint8_t>& message,
+        const Config& config = Config()
+    );
     
     /**
      * @brief Compute MAC (Message Authentication Code)
@@ -292,6 +246,14 @@ public:
         return checkpoint_data_;
     }
 
+    static bool verifyHash(
+        const std::vector<uint8_t>& message,
+        const std::vector<uint8_t>& hash,
+        const Config& config = Config()
+    );
+
+    static void secureCleanup();
+
 private:
     static void checkLicense(const Config& config) {
         auto& license_manager = LicenseManager::getInstance();
@@ -350,6 +312,34 @@ private:
 
     static std::vector<uint8_t> checkpoint_data_;
     static bool has_checkpoint_;
+
+    struct BlockContext {
+        std::array<uint64_t, Threefish3::NUM_WORDS> state;
+        std::array<uint64_t, 3> tweak;
+        size_t bytes_processed;
+        uint64_t domain;
+        bool is_first;
+        bool is_final;
+        
+        BlockContext() : bytes_processed(0), domain(DOMAIN_MSG), 
+                        is_first(true), is_final(false) {
+            state.fill(0);
+            tweak.fill(0);
+        }
+    };
+
+    static constexpr uint64_t DOMAIN_MSG = 48;
+    static constexpr uint64_t DOMAIN_CFG = 28;
+    static constexpr uint64_t DOMAIN_OUT = 63;
+    static constexpr uint64_t T1_FIRST = 1ULL << 62;
+    static constexpr uint64_t T1_FINAL = 1ULL << 63;
+
+    static void process_block(
+        BlockContext& ctx,
+        const uint8_t* data,
+        size_t size,
+        Threefish3::SecurityMode sec_mode
+    );
 };
 
 #endif // SKEIN3_H

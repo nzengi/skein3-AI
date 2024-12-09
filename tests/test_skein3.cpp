@@ -99,13 +99,25 @@ void test_streaming_mode() {
 }
 
 void test_mac() {
-    std::string message = "Test message for MAC";
-    std::vector<uint8_t> data(message.begin(), message.end());
-    std::vector<uint8_t> key(32, 0x42); // 32-byte test key
+    // Test with a standard message and key
+    std::string message1 = "Test message for MAC";
+    std::vector<uint8_t> data1(message1.begin(), message1.end());
+    std::vector<uint8_t> key1(32, 0x42); // 32-byte test key
     
     Skein3::Config config;
-    auto mac_value = Skein3::mac(data, key, config);
-    assert(mac_value.size() == 64);
+    auto mac_value1 = Skein3::mac(data1, key1, config);
+    assert(mac_value1.size() == 64);
+
+    // Test with a different message
+    std::string message2 = "Another test message for MAC";
+    std::vector<uint8_t> data2(message2.begin(), message2.end());
+    std::vector<uint8_t> key2(32, 0x43); // Different key
+    
+    auto mac_value2 = Skein3::mac(data2, key2, config);
+    assert(mac_value2.size() == 64);
+
+    // Verify that different messages produce different MACs
+    assert(mac_value1 != mac_value2);
 }
 
 void print_hash(const std::string& label, const std::vector<uint8_t>& hash) {

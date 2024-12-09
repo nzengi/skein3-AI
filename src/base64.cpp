@@ -1,4 +1,5 @@
 #include "../include/base64.h"
+#include <cstdint>
 
 const std::string Base64::base64_chars = 
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -14,7 +15,7 @@ std::string Base64::encode(const std::vector<uint8_t>& data) {
     uint8_t char_array_3[3];
     uint8_t char_array_4[4];
 
-    for (unsigned char byte : data) {
+    for (const uint8_t& byte : data) {
         char_array_3[i++] = byte;
         if (i == 3) {
             char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;

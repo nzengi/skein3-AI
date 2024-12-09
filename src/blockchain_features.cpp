@@ -1,140 +1,82 @@
-#include "blockchain_features.h"
-#include "skein3.h"
-#include <queue>
-#include <memory>
+#include "../include/blockchain_features.h"
+#include "../include/skein3.h"
+#include <stdexcept>
+#include <algorithm>
 
-// Zero-Knowledge Proof Generation
 std::vector<uint8_t> BlockchainFeatures::generateZKProof(
     const std::vector<uint8_t>& data,
-    const std::vector<uint8_t>& witness
+    const std::vector<uint8_t>& proof_params
 ) {
-    // Groth16 protokolü benzeri bir yapı
-    struct ProofPoints {
-        std::vector<uint8_t> A; // G1 point
-        std::vector<uint8_t> B; // G2 point
-        std::vector<uint8_t> C; // G1 point
-    };
-
-    // Setup proving key (örnek)
-    ProofPoints proving_key;
-    proving_key.A = std::vector<uint8_t>(32, 0xFF);
-    proving_key.B = std::vector<uint8_t>(64, 0xAA);
-    proving_key.C = std::vector<uint8_t>(32, 0x55);
-
-    // Proof generation
+    // ZK proof oluşturma mantığı
     Skein3::Config config;
-    config.size = Skein3::HashSize::HASH_512;
-    
-    // Combine data and witness
+    config.size = Skein3::HashSize::HASH_1024;
+    config.zero_knowledge = true;
+
     std::vector<uint8_t> combined;
+    combined.reserve(data.size() + proof_params.size());
     combined.insert(combined.end(), data.begin(), data.end());
-    combined.insert(combined.end(), witness.begin(), witness.end());
-    
-    // Generate proof elements
-    auto proof_A = Skein3::hash(combined, config);
-    auto proof_B = Skein3::hash(proof_A, config);
-    auto proof_C = Skein3::hash(proof_B, config);
+    combined.insert(combined.end(), proof_params.begin(), proof_params.end());
 
-    // Combine proof elements
-    std::vector<uint8_t> proof;
-    proof.insert(proof.end(), proof_A.begin(), proof_A.end());
-    proof.insert(proof.end(), proof_B.begin(), proof_B.end());
-    proof.insert(proof.end(), proof_C.begin(), proof_C.end());
-
-    return proof;
+    return Skein3::hash(combined, config);
 }
 
-// Optimized Merkle Tree Implementation
 std::vector<uint8_t> BlockchainFeatures::optimizedMerkleRoot(
     const std::vector<std::vector<uint8_t>>& transactions
 ) {
     if (transactions.empty()) {
-        return std::vector<uint8_t>();
+        throw std::invalid_argument("Empty transaction list");
     }
 
-    // Use a queue for level-by-level processing
-    std::queue<std::vector<uint8_t>> current_level;
-    
-    // Initialize leaf nodes
+    // Merkle ağacı oluşturma
+    std::vector<std::vector<uint8_t>> current_level = transactions;
     Skein3::Config config;
-    config.size = Skein3::HashSize::HASH_256;
+    config.size = Skein3::HashSize::HASH_512;
     config.merkle_tree = true;
 
-    // Process leaf nodes in parallel
-    #pragma omp parallel for
-    for (size_t i = 0; i < transactions.size(); i++) {
-        auto leaf_hash = Skein3::hash(transactions[i], config);
-        #pragma omp critical
-        {
-            current_level.push(leaf_hash);
-        }
-    }
-
-    // Process tree levels
     while (current_level.size() > 1) {
-        size_t level_size = current_level.size();
+        std::vector<std::vector<uint8_t>> next_level;
         
-        for (size_t i = 0; i < level_size / 2; i++) {
-            auto left = current_level.front();
-            current_level.pop();
-            auto right = current_level.front();
-            current_level.pop();
-
-            // Combine nodes
+        #pragma omp parallel for
+        for (size_t i = 0; i < current_level.size(); i += 2) {
             std::vector<uint8_t> combined;
-            combined.insert(combined.end(), left.begin(), left.end());
-            combined.insert(combined.end(), right.begin(), right.end());
-            
-            auto parent = Skein3::hash(combined, config);
-            current_level.push(parent);
+            combined.insert(combined.end(), 
+                          current_level[i].begin(), 
+                          current_level[i].end());
+
+            if (i + 1 < current_level.size()) {
+                combined.insert(combined.end(),
+                              current_level[i + 1].begin(),
+                              current_level[i + 1].end());
+            }
+
+            auto hash = Skein3::hash(combined, config);
+
+            #pragma omp critical
+            next_level.push_back(hash);
         }
 
-        // Handle odd number of nodes
-        if (level_size % 2 == 1) {
-            auto last = current_level.front();
-            current_level.pop();
-            current_level.push(last);
-        }
+        current_level = std::move(next_level);
     }
 
-    return current_level.front();
+    return current_level[0];
 }
 
-// Smart Contract Verification
 bool BlockchainFeatures::verifySmartContract(
     const std::vector<uint8_t>& contract_code,
-    const std::vector<uint8_t>& state
+    const std::vector<uint8_t>& execution_params
 ) {
-    struct ContractVerificationContext {
-        std::vector<uint8_t> code_hash;
-        std::vector<uint8_t> state_hash;
-        uint64_t gas_used;
-        bool is_valid;
-    };
-
-    ContractVerificationContext ctx;
-    
-    // Configure hash for contract verification
+    // Akıllı kontrat doğrulama mantığı
     Skein3::Config config;
     config.size = Skein3::HashSize::HASH_512;
     config.zero_knowledge = true;
 
-    // Hash contract code
-    ctx.code_hash = Skein3::hash(contract_code, config);
-    
-    // Hash state
-    ctx.state_hash = Skein3::hash(state, config);
+    std::vector<uint8_t> verification_data;
+    verification_data.reserve(contract_code.size() + execution_params.size());
+    verification_data.insert(verification_data.end(), contract_code.begin(), contract_code.end());
+    verification_data.insert(verification_data.end(), execution_params.begin(), execution_params.end());
 
-    // Verify contract integrity
-    std::vector<uint8_t> combined;
-    combined.insert(combined.end(), ctx.code_hash.begin(), ctx.code_hash.end());
-    combined.insert(combined.end(), ctx.state_hash.begin(), ctx.state_hash.end());
+    auto hash = Skein3::hash(verification_data, config);
     
-    auto verification_hash = Skein3::hash(combined, config);
-
-    // Implement contract-specific verification logic
-    bool code_valid = true;  // Placeholder for actual code validation
-    bool state_valid = true; // Placeholder for actual state validation
-    
-    return code_valid && state_valid;
-} 
+    // Basit doğrulama kontrolü
+    return !hash.empty() && hash[0] != 0;
+}

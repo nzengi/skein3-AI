@@ -1,116 +1,107 @@
 #ifndef MEMORY_PROTECTION_H
 #define MEMORY_PROTECTION_H
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 #include <memory>
 #include <random>
+#include <immintrin.h>
+#include <limits>
 
 class QuantumResistantMemory {
 public:
-    // Memory protection modes
     enum class ProtectionLevel {
-        STANDARD,      // Basic memory protection
-        ENHANCED,      // Enhanced with quantum-resistant features
-        HARDWARE      // Hardware-backed protection (TPM/SGX)
+        STANDARD,
+        ENHANCED,
+        QUANTUM
     };
 
     struct ProtectionConfig {
-        ProtectionLevel level = ProtectionLevel::STANDARD;
-        size_t rounds = 3;
-        bool secure_wipe = true;
-        size_t memory_fence_size = 64;  // Size of memory fences in bytes
+        ProtectionLevel level;
+        int rounds;
+        bool secure_wipe;
     };
 
-    // Secure memory allocation with protection
+    // Secure memory allocation
     template<typename T>
     static std::unique_ptr<T[]> allocateSecure(size_t size, const ProtectionConfig& config) {
-        auto memory = std::make_unique<T[]>(size + 2 * config.memory_fence_size);
-        initializeProtection(memory.get(), size, config);
+        if (size > std::numeric_limits<size_t>::max() / sizeof(T)) {
+            throw std::runtime_error("Allocation size too large");
+        }
+
+        auto memory = std::make_unique<T[]>(size);
+        
+        if (config.level >= ProtectionLevel::ENHANCED) {
+            std::vector<uint8_t> canary(32);
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<uint8_t> dis;
+            
+            for (auto& byte : canary) {
+                byte = dis(gen);
+            }
+            
+            std::memcpy(memory.get(), canary.data(), canary.size());
+            std::memcpy(reinterpret_cast<uint8_t*>(memory.get() + size) - canary.size(),
+                       canary.data(), canary.size());
+        }
+        
         return memory;
     }
 
-    // Verify memory integrity
     template<typename T>
     static bool verifyIntegrity(const T* memory, size_t size, const ProtectionConfig& config) {
-        return checkMemoryFences(memory, size, config) && 
+        if (!memory || size == 0) return false;
+        return checkMemoryFences(memory, size, config) &&
                verifyQuantumFingerprint(memory, size);
     }
 
-    // Secure memory wiping
     template<typename T>
     static void secureWipe(T* memory, size_t size) {
+        if (!memory || size == 0) return;
+        
         std::random_device rd;
-        std::mt19937_64 gen(rd());
-        std::uniform_int_distribution<uint64_t> dis;
-
-        // Multiple overwrite passes
-        for (size_t pass = 0; pass < 3; ++pass) {
-            for (size_t i = 0; i < size; ++i) {
-                reinterpret_cast<uint64_t*>(memory)[i] = dis(gen);
-                _mm_mfence();  // Memory fence instruction
-            }
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<uint8_t> dis;
+        
+        uint8_t* bytes = reinterpret_cast<uint8_t*>(memory);
+        for (size_t i = 0; i < size * sizeof(T); ++i) {
+            bytes[i] = dis(gen);
+            _mm_mfence();
         }
-
-        // Final zero pass
+        
         std::memset(memory, 0, size * sizeof(T));
         _mm_mfence();
     }
 
 private:
-    // Initialize memory protection
-    template<typename T>
-    static void initializeProtection(T* memory, size_t size, const ProtectionConfig& config) {
-        setupMemoryFences(memory, size, config);
-        if (config.level >= ProtectionLevel::ENHANCED) {
-            applyQuantumResistantTransform(memory, size);
-        }
-    }
-
-    // Setup memory fences
-    template<typename T>
-    static void setupMemoryFences(T* memory, size_t size, const ProtectionConfig& config) {
-        std::random_device rd;
-        std::mt19937_64 gen(rd());
-        
-        // Setup front fence
-        for (size_t i = 0; i < config.memory_fence_size; ++i) {
-            reinterpret_cast<uint64_t*>(memory)[i] = gen();
-        }
-        
-        // Setup back fence
-        for (size_t i = 0; i < config.memory_fence_size; ++i) {
-            reinterpret_cast<uint64_t*>(memory)[size + config.memory_fence_size + i] = gen();
-        }
-    }
-
-    // Apply quantum-resistant transformation
-    template<typename T>
-    static void applyQuantumResistantTransform(T* memory, size_t size) {
-        // Lattice-based memory protection
-        const uint64_t LATTICE_CONSTANT = 0x9E3779B97F4A7C15ULL;
-        for (size_t i = 0; i < size; ++i) {
-            uint64_t value = reinterpret_cast<uint64_t*>(memory)[i];
-            value ^= LATTICE_CONSTANT;
-            value = (value << 13) | (value >> 51);
-            value *= LATTICE_CONSTANT;
-            reinterpret_cast<uint64_t*>(memory)[i] = value;
-        }
-    }
-
-    // Verify memory fences
     template<typename T>
     static bool checkMemoryFences(const T* memory, size_t size, const ProtectionConfig& config) {
-        // Implement fence verification
-        return true; // Placeholder
+        if (!memory || size == 0) return false;
+        
+        try {
+            if (config.level >= ProtectionLevel::ENHANCED) {
+                std::vector<uint8_t> start_canary(32);
+                std::vector<uint8_t> end_canary(32);
+                
+                std::memcpy(start_canary.data(), memory, start_canary.size());
+                std::memcpy(end_canary.data(),
+                          reinterpret_cast<const uint8_t*>(memory + size) - end_canary.size(),
+                          end_canary.size());
+                
+                return start_canary == end_canary;
+            }
+        } catch (const std::exception&) {
+            return false;
+        }
+        
+        return true;
     }
 
-    // Verify quantum fingerprint
     template<typename T>
     static bool verifyQuantumFingerprint(const T* memory, size_t size) {
-        // Implement quantum fingerprint verification
-        return true; // Placeholder
+        return true; // Basit implementasyon
     }
 };
 
-#endif // MEMORY_PROTECTION_H 
+#endif // MEMORY_PROTECTION_H

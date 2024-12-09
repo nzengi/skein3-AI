@@ -32,45 +32,81 @@ include_directories(
 find_package(OpenSSL)
 if(OPENSSL_FOUND)
     include_directories(${OPENSSL_INCLUDE_DIR})
-    target_link_libraries(skein3 ${OPENSSL_LIBRARIES})
 endif()
 
 # Add source files
 set(SOURCES
     src/threefish3.cpp
     src/skein3.cpp
+    src/license.cpp
     src/thread_pool.cpp
+    src/base64.cpp
+    src/ai_protection.cpp
+    src/blockchain_features.cpp
+    src/security_monitor.cpp
+    src/adaptive_security.cpp
+    src/performance_metrics.cpp
 )
 
-# Önce kütüphaneyi oluştur
-add_library(skein3_lib ${SOURCES})
+# First, create the library
+add_library(skein3_lib STATIC ${SOURCES})
 
-# Ana uygulamayı oluştur
-add_executable(skein3 main.cpp)
-target_link_libraries(skein3 skein3_lib)
+# Then, create the main executable
+add_executable(skein3_main main.cpp)
 
-# Test hedeflerini ekle
+# Link the library to the main executable
+target_link_libraries(skein3_main PRIVATE skein3_lib)
+
+# Optional: Link OpenSSL if found
+if(OPENSSL_FOUND)
+    target_link_libraries(skein3_lib PRIVATE ${OPENSSL_LIBRARIES})
+endif()
+
+# Test targets
 add_executable(basic_test examples/basic_test.cpp)
 add_executable(performance_test examples/performance_test.cpp)
 add_executable(parallel_test examples/parallel_test.cpp)
 add_executable(security_test examples/security_test.cpp)
+add_executable(comprehensive_test examples/comprehensive_test.cpp)
+add_executable(customization_test examples/customization_test.cpp)
+add_executable(error_handling_test examples/error_handling_test.cpp)
+add_executable(integration_test examples/integration_test.cpp)
+add_executable(license_test examples/license_test.cpp)
+add_executable(memory_test examples/memory_test.cpp)
+add_executable(performance_metrics_test examples/performance_metrics_test.cpp)
+add_executable(security_benchmark examples/security_benchmark.cpp)
+add_executable(readme_test readme_test.cpp)
 
-# Test hedeflerini bağla
-target_link_libraries(basic_test skein3_lib)
-target_link_libraries(performance_test skein3_lib)
-target_link_libraries(parallel_test skein3_lib)
-target_link_libraries(security_test skein3_lib)
+# Link test targets with the library
+target_link_libraries(basic_test PRIVATE skein3_lib)
+target_link_libraries(performance_test PRIVATE skein3_lib)
+target_link_libraries(parallel_test PRIVATE skein3_lib)
+target_link_libraries(security_test PRIVATE skein3_lib)
+target_link_libraries(comprehensive_test PRIVATE skein3_lib)
+target_link_libraries(customization_test PRIVATE skein3_lib)
+target_link_libraries(error_handling_test PRIVATE skein3_lib)
+target_link_libraries(integration_test PRIVATE skein3_lib)
+target_link_libraries(license_test PRIVATE skein3_lib)
+target_link_libraries(memory_test PRIVATE skein3_lib)
+target_link_libraries(performance_metrics_test PRIVATE skein3_lib)
+target_link_libraries(security_benchmark PRIVATE skein3_lib)
+target_link_libraries(readme_test PRIVATE skein3_lib)
 
-# CTest entegrasyonu
+# CTest integration
 enable_testing()
 add_test(NAME BasicTest COMMAND basic_test)
 add_test(NAME PerformanceTest COMMAND performance_test)
 add_test(NAME ParallelTest COMMAND parallel_test)
 add_test(NAME SecurityTest COMMAND security_test)
-
-# Install targets
-install(TARGETS skein3 DESTINATION bin)
-install(FILES include/skein3.h include/threefish3.h DESTINATION include)
+add_test(NAME ComprehensiveTest COMMAND comprehensive_test)
+add_test(NAME CustomizationTest COMMAND customization_test)
+add_test(NAME ErrorHandlingTest COMMAND error_handling_test)
+add_test(NAME IntegrationTest COMMAND integration_test)
+add_test(NAME LicenseTest COMMAND license_test)
+add_test(NAME MemoryTest COMMAND memory_test)
+add_test(NAME PerformanceMetricsTest COMMAND performance_metrics_test)
+add_test(NAME SecurityBenchmarkTest COMMAND security_benchmark)
+add_test(NAME ReadmeTest COMMAND readme_test)
 
 # CUDA support
 option(WITH_CUDA "Enable CUDA support" OFF)
@@ -80,3 +116,13 @@ if(WITH_CUDA)
     find_package(CUDA REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
 endif()
+
+# Install targets
+install(TARGETS skein3_main DESTINATION bin)
+install(TARGETS skein3_lib DESTINATION lib)
+install(FILES 
+    include/skein3.h 
+    include/threefish3.h 
+    include/thread_pool.h
+    DESTINATION include/skein3
+)

@@ -1,330 +1,105 @@
-# Skein3: Next-Generation Cryptographic Hash Function
-
-> 🔒 Enterprise-grade cryptographic hash function with quantum resistance, AI adaptation, and blockchain optimization capabilities.
+# Skein3: Advanced Cryptographic Hash Function
 
 [![License](https://img.shields.io/badge/License-Commercial-blue.svg)](https://github.com/nzengi/skein3/blob/main/LICENSE)
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/std/the-standard)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey.svg)](https://github.com/nzengi/skein3)
 
-## Features
+## Overview
 
-### Core Functionality
-- 🛡️ **Quantum Resistance**
-  - Lattice-based transformations
-  - Post-quantum security
-  - Enhanced entropy generation
+Skein3 is an advanced, enterprise-grade cryptographic hash function designed for high-security applications. It offers quantum resistance, adaptive security, and advanced optimization features for AI, blockchain, and high-performance computing environments.
 
-- ⚡ **High Performance**
-  - SIMD optimizations (AVX2/SSE4.2)
-  - Multi-threaded processing
-  - GPU acceleration (CUDA)
+## Key Features
 
-- 🧠 **AI Integration**
-  - Neural hash adaptation
-  - Model protection
-  - Batch processing optimization
+### 🔒 Security
+- Quantum-resistant hash algorithm
+- Adaptive security levels
+- Advanced memory protection
+- Side-channel attack mitigation
 
-- ⛓️ **Blockchain Features**
-  - Merkle tree optimization
-  - Zero-knowledge proofs
-  - Smart contract verification
+### ⚡ Performance
+- SIMD and multi-threading optimizations
+- GPU acceleration support
+- Configurable hash sizes (256, 512, 1024 bits)
+- Low-overhead design
 
-### Security Features
-- 🔐 **Memory Protection**
-  - Quantum-resistant memory guards
-  - Secure memory wiping
-  - Hardware-backed security
-
-- 🔍 **Real-time Monitoring**
-  - Threat detection
-  - Entropy analysis
-  - Attack probability calculation
-
-- 🛡️ **Adaptive Security**
-  - Dynamic security levels
-  - Threat-based adaptation
-  - Environmental analysis
+### 🧠 AI & Blockchain Integration
+- Neural network-based hash adaptation
+- Merkle tree optimization
+- Zero-knowledge proof support
+- Blockchain-specific hash modes
 
 ## Installation
 
 ### Prerequisites
 - C++17 compatible compiler
-- CMake 3.10 or higher
-- AVX2 supported CPU (for SIMD optimizations)
+- CMake 3.10+
+- OpenSSL (optional)
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-### Non-Commercial Use
-This project is available under the MIT License for non-commercial use only. See the [LICENSE](LICENSE) file for details.
-
-### Commercial Use
-For commercial use, please contact nzengi@github.com for licensing options. Commercial licenses include:
-
-- **Basic Commercial License**
-  - Single product use
-  - Technical support
-  - Security updates
-  - Starting from $999/year
-
-- **Enterprise License**
-  - Multiple product use
-  - Priority support
-  - Security updates
-  - Custom feature development
-  - Starting from $4999/year
-
-### Ownership and Rights
-All rights reserved © 2024 nzengi. This includes but is not limited to:
-- Source code
-- Documentation
-- Algorithms
-- Patents and patent applications
-- Trademarks
-
-Unauthorized use, modification, or distribution for commercial purposes is strictly prohibited.
-
-## Contact
-
-For commercial licensing and other inquiries:
-- GitHub: [@nzengi](https://github.com/nzengi)
-
-## Enterprise Solutions
-
-### For AI Companies
-- Model integrity protection
-- Secure weight updates
-- Batch processing optimization
-- Framework integration support
-
-### For Blockchain Companies
-- High-throughput transaction processing
-- Custom consensus mechanisms
-- Smart contract security
-- Zero-knowledge integration
-
-## Licensing
-
-### Commercial Licenses
-- **Basic**:
-  - Single product use
-  - Standard features
-  - Email support
-
-- **AI-Specific**
-  - AI optimization features
-  - GPU acceleration
-  - Priority support
-
-- **Blockchain**:
-  - Blockchain features
-  - Custom integration
-  - 24/7 support
-
-- **Enterprise**: Custom pricing
-  - All features
-  - Custom development
-  - Dedicated support
-
-Contact sales@skein3.com for licensing.
-
-## Support
-- Documentation: [docs.skein3.com](https://docs.skein3.com)
-- Email: support@skein3.com
-- Issues: [GitHub Issues](https://github.com/nzengi/skein3/issues)
-
-## Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
-## Security
-See [SECURITY.md](SECURITY.md) for security policy and reporting vulnerabilities.
-
-## License
-Copyright © 2024 nzengi. All rights reserved.
-
-## Usage Examples
-
-### Basic Hash
-```cpp
-#include "skein3.h"
-
-int main() {
-    // Create configuration
-    Skein3::Config config;
-    config.size = Skein3::HashSize::HASH_512;
-    config.mode = Skein3::HashMode::STANDARD;
-
-    // Input message
-    std::string message = "Hello, Skein3!";
-    std::vector<uint8_t> data(message.begin(), message.end());
-
-    // Compute hash
-    auto hash = Skein3::hash(data, config);
-
-    // Print result
-    for (uint8_t byte : hash) {
-        std::cout << std::hex << std::setw(2) << std::setfill('0') 
-                 << static_cast<int>(byte);
-    }
-    std::cout << std::endl;
-}
+### Build from Source
+```bash
+git clone https://github.com/nzengi/skein3.git
+cd skein3
+mkdir build && cd build
+cmake ..
+make
 ```
 
-### AI Model Protection
+## Basic Usage
+
+### Standard Hashing
 ```cpp
-#include "skein3.h"
-#include "ai_protection.h"
+#include <skein3.h>
 
-// Protect AI model
-std::vector<float> model_weights = /* your model weights */;
-std::vector<uint8_t> architecture = /* model architecture */;
+std::vector<uint8_t> message = {1, 2, 3, 4, 5};
+Skein3::Config config;
+config.size = Skein3::HashSize::HASH_512;
 
-// Configure protection
+auto hash = Skein3::hash(message, config);
+```
+
+### Streaming Hash
+```cpp
+Skein3::StreamingHasher hasher;
+hasher.update(chunk1);
+hasher.update(chunk2);
+auto final_hash = hasher.finalize();
+```
+
+### AI-Optimized Hashing
+```cpp
 Skein3::Config config;
 config.neural_config.enable_neural_adaptation = true;
 config.neural_config.complexity_threshold = 0.85f;
 
-// Generate protection
-auto protection = AIModelProtection::protectModel(
-    model_weights,
-    architecture
-);
-
-// Verify and update weights
-bool success = AIModelProtection::updateWeightsSecurely(
-    model_weights,
-    new_updates
-);
+auto hash = Skein3::hash(message, config);
 ```
 
-### Blockchain Integration
-```cpp
-#include "skein3.h"
-#include "blockchain_features.h"
+## Licensing
 
-// Configure for blockchain
-Skein3::Config config;
-config.opt_mode = Skein3::OptimizationMode::BLOCKCHAIN;
-config.merkle_tree = true;
-config.zero_knowledge = true;
+Skein3 is a commercial product with different licensing tiers:
+- Basic Commercial License
+- Enterprise License
+- AI/Blockchain Specific Licenses
 
-// Generate Merkle root
-std::vector<std::vector<uint8_t>> transactions = /* transaction data */;
-auto merkle_root = BlockchainFeatures::optimizedMerkleRoot(transactions);
+Contact sales@skein3.com for licensing information.
 
-// Generate zero-knowledge proof
-auto proof = BlockchainFeatures::generateZKProof(
-    public_data,
-    witness_data
-);
-```
+## Performance Benchmarks
 
-### Parallel Processing
-```cpp
-#include "skein3.h"
+See `docs/benchmarks.md` for detailed performance comparisons with other hash functions.
 
-// Configure tree mode
-Skein3::Config config;
-config.mode = Skein3::HashMode::TREE;
-config.tree_fan_out = 8;  // Use 8 threads
-config.tree_leaf_size = 1024;
+## Contributing
 
-// Process large data
-std::vector<uint8_t> large_data = /* large input data */;
-auto hash = Skein3::tree_hash(large_data, config);
-```
+We welcome contributions! Please see `CONTRIBUTING.md` for guidelines.
 
-### Security Monitoring
-```cpp
-#include "skein3.h"
-#include "security_monitor.h"
-#include "adaptive_security.h"
+## Security Reporting
 
-// Hash with monitoring
-auto hash = Skein3::hash(data, config);
+For security vulnerabilities, please email security@skein3.com.
 
-// Analyze security
-auto metrics = SecurityMonitor::analyzeHashOperation(data, hash);
-auto threat_level = AdaptiveSecurity::analyzeThreatLevel(data, metrics);
+## License
 
-// Adjust security if needed
-if (threat_level >= AdaptiveSecurity::ThreatLevel::HIGH) {
-    AdaptiveSecurity::adjustSecurityParameters(config, threat_level);
-}
-```
+Commercial License. See `LICENSE` for details.
 
-### Memory Protection
-```cpp
-#include "skein3.h"
-#include "memory_protection.h"
+## Research & Development
 
-// Configure memory protection
-Skein3::Config config;
-config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
-config.secure_memory_wipe = true;
-
-// Allocate secure memory
-auto secure_buffer = Skein3::allocateSecureMemory<uint8_t>(1024, config);
-
-// Verify memory integrity
-bool is_valid = Skein3::verifyMemoryIntegrity(
-    secure_buffer.get(),
-    1024,
-    config
-);
-```
-
-### GPU Acceleration
-```cpp
-#ifdef CUDA_ENABLED
-#include "skein3.h"
-
-// Configure GPU acceleration
-Skein3::Config config;
-config.gpu_acceleration = true;
-config.batch_size = 1024;  // Process 1024 hashes at once
-
-// Batch process on GPU
-std::vector<std::vector<uint8_t>> batch_data = /* multiple inputs */;
-auto results = Skein3::batch_hash(batch_data, config);
-#endif
-```
-
-## Performance Tips
-
-1. **Use Tree Mode for Large Data**
-   ```cpp
-   config.mode = Skein3::HashMode::TREE;
-   config.tree_fan_out = std::thread::hardware_concurrency();
-   ```
-
-2. **Enable GPU for Batch Processing**
-   ```cpp
-   config.gpu_acceleration = true;
-   config.batch_size = 1024;  // Adjust based on GPU memory
-   ```
-
-3. **Optimize Memory Usage**
-   ```cpp
-   config.tree_leaf_size = 4096;  // Adjust for cache size
-   config.secure_memory_wipe = false;  // Disable if not needed
-   ```
-
-4. **Balance Security and Speed**
-   ```cpp
-   if (high_security_needed) {
-       config.size = Skein3::HashSize::HASH_1024;
-       config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
-   } else {
-       config.size = Skein3::HashSize::HASH_256;
-       config.mem_protection = Skein3::MemoryProtectionMode::STANDARD;
-   }
-   ```
+Skein3 is developed by nzengi, with ongoing research in post-quantum cryptography and advanced hash function design.
 

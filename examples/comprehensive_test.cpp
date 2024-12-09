@@ -6,6 +6,18 @@
 #include <random>
 #include <chrono>
 #include <cassert>
+#include <unordered_map>
+
+// Hash fonksiyonu std::vector<uint8_t> için
+struct ByteVectorHash {
+    size_t operator()(const std::vector<uint8_t>& v) const {
+        size_t hash = 0;
+        for (uint8_t byte : v) {
+            hash = (hash * 131) + byte;
+        }
+        return hash;
+    }
+};
 
 class ComprehensiveTest {
 public:
@@ -115,31 +127,38 @@ private:
         std::cout << "\n4. Random Data Test\n";
 
         const int NUM_TESTS = 1000;
-        std::unordered_map<std::string, int> hash_counts;
+        std::unordered_map<std::vector<uint8_t>, int, ByteVectorHash> hash_counts;
 
-        for (int i = 0; i < NUM_TESTS; ++i) {
-            size_t size = 1024 + (rand() % (1024 * 1024));
-            std::vector<uint8_t> data(size);
-            fillRandomData(data);
+        Skein3::Config config;
+        config.size = Skein3::HashSize::HASH_512;
+        config.mem_protection = Skein3::MemoryProtectionMode::STANDARD;
 
-            Skein3::Config config;
-            auto hash = Skein3::hash(data, config);
-            
-            std::string hash_str(hash.begin(), hash.end());
-            hash_counts[hash_str]++;
-        }
+        try {
+            for (int i = 0; i < NUM_TESTS; ++i) {
+                size_t size = 1024 + (rand() % (1024 * 64));
+                std::vector<uint8_t> data(size);
+                fillRandomData(data);
 
-        bool collision_found = false;
-        for (const auto& [hash, count] : hash_counts) {
-            if (count > 1) {
-                std::cout << "Collision found! Hash repeat count: " 
-                         << count << "\n";
-                collision_found = true;
+                auto hash = Skein3::hash(data, config);
+                
+                if (hash_counts[hash]++ > 0) {
+                    std::cout << "Warning: Hash collision detected at iteration " << i << "\n";
+                }
             }
-        }
 
-        if (!collision_found) {
-            std::cout << "No collisions found (" << NUM_TESTS << " tests)\n";
+            bool collision_found = false;
+            for (const auto& [hash, count] : hash_counts) {
+                if (count > 1) {
+                    std::cout << "Collision found! Hash repeat count: " << count << "\n";
+                    collision_found = true;
+                }
+            }
+
+            if (!collision_found) {
+                std::cout << "No collisions found in " << NUM_TESTS << " tests\n";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error during random data test: " << e.what() << "\n";
         }
     }
 

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.cu": "cuda-cpp",
+        "*.cuh": "cuda-cpp",
+        "random": "cpp",
+        "vector": "cpp"
+    }
+}
