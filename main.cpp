@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <fstream>
 
 void printHash(const std::string& label, const std::vector<uint8_t>& hash) {
     std::cout << label << ": ";
@@ -23,8 +24,27 @@ void printSecurityMetrics(const SecurityMonitor::SecurityMetrics& metrics) {
     std::cout << "Attack Probability: " << metrics.attack_probability << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     try {
+        // Lisans anahtarını çevresel değişkenden al
+        const char* license_key = std::getenv("SKEIN3_LICENSE");
+        if (!license_key) {
+            std::cerr << "License key not found. Please set SKEIN3_LICENSE environment variable.\n";
+            std::cerr << "Contact: your@email.com\n";
+            return 1;
+        }
+
+        // Lisansı ayarla
+        std::cout << "Setting license key: " << license_key << std::endl;  // Debug mesajı
+        LicenseManager::getInstance().setLicense(license_key);
+
+        // Lisans kontrolü
+        if (!LicenseManager::getInstance().isLicenseValid()) {
+            std::cerr << "No valid license found. Please obtain a license key.\n";
+            std::cerr << "Contact: your@email.com\n";
+            return 1;
+        }
+
         // Example message
         std::string message = "This is a C++ implementation of the Skein3 hash function.";
         std::vector<uint8_t> message_bytes(message.begin(), message.end());

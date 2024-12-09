@@ -56,31 +56,50 @@ public:
 private:
     // Basic API usage test
     static bool testBasicAPI() {
+        std::cout << "\nAPI Basic Test\n";
         try {
             // 1. Simple hash calculation
+            std::cout << "Testing basic hash calculation... ";
             std::string message = "Test message";
             std::vector<uint8_t> data(message.begin(), message.end());
             
             Skein3::Config config;
+            config.size = Skein3::HashSize::HASH_256; // Explicitly set size
             auto hash = Skein3::hash(data, config);
             
-            if (hash.empty()) return false;
+            if (hash.empty()) {
+                std::cout << "Failed: Empty hash returned\n";
+                return false;
+            }
+            std::cout << "Success (hash size: " << hash.size() << " bytes)\n";
 
             // 2. Different hash sizes
-            config.size = Skein3::HashSize::HASH_1024;
+            std::cout << "Testing different hash sizes... ";
+            config.size = Skein3::HashSize::HASH_512;
             auto large_hash = Skein3::hash(data, config);
             
-            if (large_hash.size() != 1024/8) return false;
+            if (large_hash.size() != 512/8) {
+                std::cout << "Failed: Incorrect hash size (got " 
+                         << large_hash.size() << ", expected " << 512/8 << ")\n";
+                return false;
+            }
+            std::cout << "Success (hash size: " << large_hash.size() << " bytes)\n";
 
             // 3. Streaming API
+            std::cout << "Testing streaming API... ";
             Skein3::StreamingHasher hasher(config);
             hasher.update(data);
             auto stream_hash = hasher.finalize();
             
-            if (stream_hash.empty()) return false;
+            if (stream_hash.empty()) {
+                std::cout << "Failed: Empty stream hash\n";
+                return false;
+            }
+            std::cout << "Success (hash size: " << stream_hash.size() << " bytes)\n";
 
             return true;
-        } catch (...) {
+        } catch (const std::exception& e) {
+            std::cout << "Failed: " << e.what() << "\n";
             return false;
         }
     }
@@ -145,32 +164,64 @@ private:
 
     // Error handling test
     static bool testErrorHandling() {
+        std::cout << "\n4. Error Handling Test\n";
+
         try {
             // 1. Empty data test
+            std::cout << "Testing empty data handling... ";
             std::vector<uint8_t> empty_data;
             Skein3::Config config;
             auto hash1 = Skein3::hash(empty_data, config);
+            if (hash1.empty()) {
+                std::cout << "Failed: Empty hash returned\n";
+                return false;
+            }
+            std::cout << "Success\n";
 
             // 2. Invalid configuration test
+            std::cout << "Testing invalid configuration... ";
+            config.mode = Skein3::HashMode::TREE;
             config.tree_fan_out = 0;  // Invalid value
             bool caught_exception = false;
             try {
                 auto hash2 = Skein3::hash(empty_data, config);
+                std::cout << "Failed: Should throw invalid_argument\n";
+                return false;
             } catch (const std::invalid_argument&) {
                 caught_exception = true;
+                std::cout << "Success\n";
             }
 
-            // 3. License check
+            // 3. License check - Config'i sıfırla
+            std::cout << "Testing license validation... ";
+            config = Skein3::Config(); // Yeni temiz config
             config.size = Skein3::HashSize::HASH_1024;
             bool license_check = false;
             try {
                 auto hash3 = Skein3::hash(empty_data, config);
+                std::cout << "Failed: Should throw LicenseException\n";
+                return false;
             } catch (const LicenseException&) {
                 license_check = true;
+                std::cout << "Success\n";
             }
 
-            return !hash1.empty() && caught_exception && license_check;
-        } catch (...) {
+            // 4. Memory protection - Config'i sıfırla
+            std::cout << "Testing memory protection... ";
+            config = Skein3::Config(); // Yeni temiz config
+            config.mem_protection = Skein3::MemoryProtectionMode::QUANTUM_RESISTANT;
+            try {
+                std::vector<uint8_t> large_data(1024 * 1024); // 1MB
+                auto hash4 = Skein3::hash(large_data, config);
+                std::cout << "Success\n";
+            } catch (const std::exception& e) {
+                std::cout << "Failed: " << e.what() << "\n";
+                return false;
+            }
+
+            return true;
+        } catch (const std::exception& e) {
+            std::cout << "Unexpected error: " << e.what() << "\n";
             return false;
         }
     }

@@ -1,0 +1,28 @@
+# Build files
+build/
+*.o
+*.a
+CMakeCache.txt
+CMakeFiles/
+Testing/
+*.cmake
+Makefile
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated files
+*.log
+*.out
+*.exe
+
+# License files
+.skein3_config
+*.license
+
+# Private tools
+tools/
+skein3-admin/ 

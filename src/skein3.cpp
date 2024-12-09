@@ -134,6 +134,18 @@ std::vector<uint8_t> Skein3::hash(
     const std::vector<uint8_t>& message,
     const Config& config
 ) {
+    // License kontrolü ekleyelim
+    if (config.size == HashSize::HASH_1024) {
+        if (!LicenseManager::getInstance().isCommercialUse()) {
+            throw LicenseException("Quantum-resistant mode (1024-bit) requires a commercial license");
+        }
+    }
+
+    // Konfigürasyon validasyonu
+    if (config.mode == HashMode::TREE && config.tree_fan_out == 0) {
+        throw std::invalid_argument("Tree fan-out cannot be zero");
+    }
+
     // Hash boyutunu ayarla
     size_t hash_size = static_cast<size_t>(config.size) / 8;
     std::vector<uint8_t> result(hash_size);

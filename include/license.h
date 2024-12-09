@@ -48,6 +48,13 @@ public:
     void setLicense(const std::string& license_key);
     const License& getCurrentLicense() const;
 
+    bool isLicenseValid() const {
+        std::lock_guard<std::mutex> lock(license_mutex_);
+        return current_license_.is_valid;
+    }
+
+    static std::string generateValidationCode(const std::string& user_id);
+
 private:
     LicenseManager() = default;
     License current_license_;

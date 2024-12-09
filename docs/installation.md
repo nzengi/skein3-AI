@@ -1,54 +1,86 @@
-# Skein3 Installation Guide
+# Skein3 Installation & Usage Guide
 
 ## Prerequisites
 - C++17 compatible compiler
 - CMake 3.10+
 - OpenSSL (optional)
-- CUDA (optional, for GPU support)
 
-## Supported Platforms
-- Linux (Ubuntu 20.04+)
-- Windows (MSVC 2019+)
-- macOS (Clang 10+)
+## Installation Steps
 
-## Build from Source
+1. Get your license key
+   - Contact us at your@email.com to obtain a license key
+   - We will provide you with a unique license key in format: `SKEIN3-XXXXXXX-YYYYYYY`
 
-### Linux/macOS
+2. Clone the repository:
 ```bash
-git clone https://github.com/nzengi/skein3.git
-cd skein3
+git clone https://github.com/nzengi/skein3-AI.git
+cd skein3-AI
+```
+
+3. Build the project:
+```bash
 mkdir build && cd build
 cmake ..
 make
-sudo make install
 ```
 
-### Windows (Visual Studio)
-1. Install Visual Studio 2019 or later
-2. Install CMake
-3. Open Developer Command Prompt
-```cmd
-git clone https://github.com/nzengi/skein3.git
-cd skein3
-mkdir build && cd build
-cmake -G "Visual Studio 16 2019" ..
-cmake --build . --config Release
-```
-
-## Optional Features
-
-### GPU Support
+4. Set your license key as an environment variable:
 ```bash
-cmake -DWITH_CUDA=ON ..
+export SKEIN3_LICENSE="YOUR-PROVIDED-LICENSE-KEY"
 ```
 
-### Custom Installation
+## Permanent License Setup
+
+To avoid setting the license key every time, add it to your ~/.bashrc:
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=/custom/path ..
+echo 'export SKEIN3_LICENSE="YOUR-PROVIDED-LICENSE-KEY"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-## Linking in Your Project
-```cmake
-find_package(Skein3 REQUIRED)
-target_link_libraries(your_project Skein3::skein3)
+## Usage Examples
+
+### Basic Hashing
+```cpp
+#include <skein3.h>
+
+std::vector<uint8_t> message = {1, 2, 3, 4, 5};
+Skein3::Config config;
+config.size = Skein3::HashSize::HASH_512;
+
+auto hash = Skein3::hash(message, config);
 ```
+
+### Parallel Processing
+```cpp
+Skein3::Config config;
+config.mode = Skein3::HashMode::TREE;
+config.tree_fan_out = 8;  // Use 8 threads
+auto hash = Skein3::tree_hash(large_data, config);
+```
+
+### AI-Optimized Mode
+```cpp
+Skein3::Config config;
+config.neural_config.enable_neural_adaptation = true;
+config.neural_config.complexity_threshold = 0.85f;
+auto hash = Skein3::hash(data, config);
+```
+
+## Support
+
+For any issues or questions:
+- Email: your@email.com
+- GitHub Issues: https://github.com/nzengi/skein3-AI/issues
+
+## License Types
+
+1. Basic Commercial License
+   - Standard features
+   - Single developer use
+
+2. Enterprise License
+   - All features including quantum resistance
+   - Multiple developer use
+   - Priority support
+
+Contact your@email.com for licensing information.
